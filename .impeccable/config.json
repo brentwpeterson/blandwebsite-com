@@ -11,6 +11,33 @@
         ],
         "createdAt": "2026-11-02T21:52:12.249Z",
         "reason": "Claude-Bondi 2026-11-02: blandwebsite.com is a parody of default AI sites; Brent asked for the stock Astro basics template look, and the gradient code text is copied verbatim from that template"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "src/layouts/Layout.astro"
+        ],
+        "createdAt": "2026-11-02T21:53:31.527Z",
+        "reason": "Brent 2026-11-02: \"this is meant to do the basic astro template and use the standard fonts etc. the idea is to make this somewhat sarcastic\" - parody of bland AI sites"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/layouts/Layout.astro"
+        ],
+        "createdAt": "2026-11-02T21:53:31.642Z",
+        "reason": "Brent 2026-11-02: \"this is meant to do the basic astro template and use the standard fonts etc. the idea is to make this somewhat sarcastic\" - parody of bland AI sites; type sizes are the stock Astro basics template values"
+      },
+      {
+        "rule": "marketing-buzzword",
+        "value": "*",
+        "files": [
+          "src/layouts/Layout.astro"
+        ],
+        "createdAt": "2026-11-02T21:53:31.757Z",
+        "reason": "Brent 2026-11-02: \"this is meant to do the basic astro template and use the standard fonts etc. the idea is to make this somewhat sarcastic\" - parody of bland AI sites; buzzwords are the joke"
       }
     ]
   }
