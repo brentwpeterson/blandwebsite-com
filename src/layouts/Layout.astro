@@ -54,6 +54,9 @@ const path = Astro.url.pathname;
 					&copy; 2026 Bland Website. All rights reserved, not that anyone asked. Every word and every Jack Russell on this
 					site was made by AI, which you probably figured out around "fast-paced digital landscape."
 				</p>
+				<p class="human">
+					Want words a human wrote? <a href="https://contentcucumber.com/">Go here.</a>
+				</p>
 			</footer>
 		</div>
 	</body>
@@ -146,6 +149,15 @@ const path = Astro.url.pathname;
 		margin: 0 auto;
 		color: #4b5563;
 		font-size: 14px;
+	}
+
+	footer p.human {
+		margin-top: 8px;
+		color: #111827;
+	}
+
+	footer p.human a {
+		color: #3245ff;
 	}
 
 	.hero {
