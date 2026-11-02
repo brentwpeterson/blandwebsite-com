@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 24
+        - nvm install 24 --skip-default-packages
         - nvm use 24
         - node -v
         - npm ci
