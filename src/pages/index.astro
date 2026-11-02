@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Home">
+	<section class="hero">
+		<h1>
+			Welcome to our website. We are passionate about delivering{' '}
+			<code><span>innovative solutions</span></code>{' '}
+			in today's fast-paced digital landscape.
+		</h1>
+		<p>
+			We built this site with the default Astro template, the default fonts, and an AI that has read
+			every About Us page on the internet. Nothing here will surprise you. That is the product.
+		</p>
+		<section class="links">
+			<a class="button" href="/about/">Learn More</a>
+			<a href="/services/">Get Started &rarr;</a>
+		</section>
+	</section>
+
+	<section class="grid">
+		<div class="box">
+			<h2>Best-in-Class</h2>
+			<p>We have not met the rest of the class, but we feel good about our chances.</p>
+		</div>
+		<div class="box">
+			<h2>Customer-Centric</h2>
+			<p>Our customers are at the center of everything we do. We would like to meet one.</p>
+		</div>
+		<div class="box">
+			<h2>Results-Driven</h2>
+			<p>The results are this website. You are looking at the results.</p>
+		</div>
+	</section>
+
+	<a href="/services/" class="box news">
+		<h2>What's New at Bland Website?</h2>
+		<p>Nothing. We checked twice. Click anyway to explore our unwavering commitment to excellence.</p>
+	</a>
+</Layout>
+
+<style>
+	.news {
+		display: block;
+		max-width: 360px;
+		margin: 0 0 48px auto;
+		text-decoration: none;
+		transition: background 0.2s;
+		backdrop-filter: blur(50px);
+	}
+
+	.news:hover {
+		background: rgba(255, 255, 255, 0.55);
+	}
+</style>

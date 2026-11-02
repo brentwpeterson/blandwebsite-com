@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/layouts/Layout.astro"
+        ],
+        "createdAt": "2026-11-02T21:52:12.249Z",
+        "reason": "Claude-Bondi 2026-11-02: blandwebsite.com is a parody of default AI sites; Brent asked for the stock Astro basics template look, and the gradient code text is copied verbatim from that template"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact Us" description="Reach out to Bland Website. We would love to hear from you, in the way a form loves to be filled out.">
+	<section class="hero">
+		<h1>Let's <code><span>Connect</span></code></h1>
+		<p>
+			We would love to hear from you, in the sense that a form would love to be filled out. Type
+			anything below. Nothing you type leaves your browser, which makes us the most private company
+			on the internet.
+		</p>
+	</section>
+
+	<form class="box contact" id="contact-form">
+		<label>
+			Your name
+			<input type="text" name="name" placeholder="Valued Customer" autocomplete="off" />
+		</label>
+		<label>
+			How can we help?
+			<textarea name="message" rows="4" placeholder="I am reaching out to touch base and circle back."
+			></textarea>
+		</label>
+		<button class="button" type="submit">Submit</button>
+		<p class="thanks" id="thanks" hidden>
+			Thanks! Your message has been sent to the void. A member of our team will never be in touch.
+		</p>
+	</form>
+</Layout>
+
+<script>
+	const form = document.getElementById('contact-form') as HTMLFormElement | null;
+	const thanks = document.getElementById('thanks');
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		form.reset();
+		if (thanks) thanks.hidden = false;
+	});
+</script>
+
+<style>
+	.contact {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		max-width: 520px;
+		margin-bottom: 48px;
+	}
+
+	label {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		color: #111827;
+		font-size: 14px;
+	}
+
+	input,
+	textarea {
+		font: inherit;
+		font-size: 16px;
+		padding: 10px 12px;
+		border: 1px solid #d1d5db;
+		border-radius: 10px;
+		background: rgba(255, 255, 255, 0.8);
+	}
+
+	.contact .button {
+		align-self: start;
+	}
+
+	.thanks {
+		margin: 0;
+		color: #111827;
+	}
+</style>
