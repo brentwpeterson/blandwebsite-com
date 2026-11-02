@@ -1,5 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import handshake from '../assets/images/handshake.png';
+import support from '../assets/images/support-headset.png';
 ---
 
 <Layout title="Services" description="Scalable, seamless, end-to-end services that deliver results. Results not included.">
@@ -11,6 +14,14 @@ import Layout from '../layouts/Layout.astro';
 		</p>
 	</section>
 
+	<Image
+		class="photo"
+		src={handshake}
+		alt="Two business people shake hands on a deal in a bright lobby while a Jack Russell Terrier, the only one who read the contract, looks at the camera."
+		widths={[480, 960, 1376]}
+		sizes="(max-width: 960px) 100vw, 928px"
+	/>
+
 	<section class="grid">
 		<div class="box">
 			<h2>Seamless Integration</h2>
@@ -21,6 +32,13 @@ import Layout from '../layouts/Layout.astro';
 			<p>This website can comfortably handle up to several visitors at once.</p>
 		</div>
 		<div class="box">
+			<Image
+				class="card-photo"
+				src={support}
+				alt="A Jack Russell Terrier in a call-center headset, ready to not understand your question."
+				widths={[320, 640]}
+				sizes="(max-width: 768px) 100vw, 300px"
+			/>
 			<h2>24/7 Support</h2>
 			<p>Our chatbot is available around the clock to tell you it did not understand the question.</p>
 		</div>
@@ -45,6 +63,14 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+	.card-photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 10px;
+		margin-bottom: 12px;
+	}
+
 	.cta {
 		margin-bottom: 48px;
 	}

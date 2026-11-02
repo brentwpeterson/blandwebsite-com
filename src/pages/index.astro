@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import ceoDesk from '../assets/images/ceo-desk.png';
 ---
 
 <Layout title="Home">
@@ -18,6 +20,15 @@ import Layout from '../layouts/Layout.astro';
 			<a href="/services/">Get Started &rarr;</a>
 		</section>
 	</section>
+
+	<Image
+		class="photo"
+		src={ceoDesk}
+		alt="Our CEO, a Jack Russell Terrier in a navy suit and tie, standing on an office chair at a laptop and ready to leverage synergy."
+		widths={[480, 960, 1376]}
+		sizes="(max-width: 960px) 100vw, 928px"
+		loading="eager"
+	/>
 
 	<section class="grid">
 		<div class="box">

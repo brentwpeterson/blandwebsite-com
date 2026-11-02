@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import waiting from '../assets/images/waiting-by-phone.png';
 ---
 
 <Layout title="Contact Us" description="Reach out to Bland Website. We would love to hear from you, in the way a form loves to be filled out.">
@@ -11,6 +13,14 @@ import Layout from '../layouts/Layout.astro';
 			on the internet.
 		</p>
 	</section>
+
+	<Image
+		class="photo"
+		src={waiting}
+		alt="A Jack Russell Terrier at an office desk stares at a beige telephone, waiting for your call. It will not ring."
+		widths={[480, 960, 1376]}
+		sizes="(max-width: 960px) 100vw, 928px"
+	/>
 
 	<form class="box contact" id="contact-form">
 		<label>

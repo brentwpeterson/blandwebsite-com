@@ -1,5 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import team from '../assets/images/team-high-five.png';
+import sarah from '../assets/images/sarah-j-headshot.png';
 ---
 
 <Layout title="About Us" description="The story of Bland Website, a journey of passion, innovation, and buying a domain on a Monday afternoon.">
@@ -15,6 +18,14 @@ import Layout from '../layouts/Layout.astro';
 			and technology coming together, which is the sentence every About page has to contain by law.
 		</p>
 	</section>
+
+	<Image
+		class="photo"
+		src={team}
+		alt="Our team high-fiving around a conference table while the Jack Russell Terrier in the big chair, who runs the place, stays calm."
+		widths={[480, 960, 1376]}
+		sizes="(max-width: 960px) 100vw, 928px"
+	/>
 
 	<section class="grid">
 		<div class="box">
@@ -32,6 +43,14 @@ import Layout from '../layouts/Layout.astro';
 	</section>
 
 	<section class="box testimonial">
+		<Image
+			class="headshot"
+			src={sarah}
+			alt="Professional headshot of Sarah J., a Jack Russell Terrier in a blue collar and pearls."
+			width={120}
+			height={120}
+			densities={[1, 2]}
+		/>
 		<p class="quote">"This website met my expectations, which were low."</p>
 		<p>Sarah J., Satisfied Customer*</p>
 		<p class="fine-print">*Not a customer. Not satisfied. Possibly not Sarah.</p>
@@ -41,6 +60,14 @@ import Layout from '../layouts/Layout.astro';
 <style>
 	.testimonial {
 		margin-bottom: 48px;
+	}
+
+	.headshot {
+		display: block;
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		margin-bottom: 16px;
 	}
 
 	.quote {
