@@ -695,3 +695,12 @@ html {
   border-radius: 12px;
   margin: 1.5rem 0;
 }
+
+// "Written by <model>" line the autopost script puts at the top of every AI post
+.aw-ai-byline {
+  font-size: 0.875rem;
+  color: var(--aw-muted, inherit);
+  border-left: 3px solid var(--aw-border);
+  padding-left: 0.75rem;
+  margin-bottom: 2rem;
+}

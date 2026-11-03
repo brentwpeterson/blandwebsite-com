@@ -1,0 +1,74 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+
+const writers = [
+  { name: 'Claude', maker: 'Anthropic', how: 'Claude Code, run headless' },
+  { name: 'ChatGPT', maker: 'OpenAI', how: 'the Codex command line' },
+  { name: 'Gemini', maker: 'Google', how: 'the Antigravity command line' },
+];
+---
+
+<BaseLayout
+  title="The experiment"
+  description="Bland Website is a public test. Three AI models write one blog post a day with no human editing, on topics taken from real Google searches."
+>
+  <PageHero
+    eyebrow="The experiment"
+    title="Here is the plan."
+    subtitle="Every word on this site is written by AI. Starting November 2026 it publishes a new blog post every day, and no human reads the posts before they go live."
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="aw-prose">
+        <h2 class="title is-3">Three writers take turns</h2>
+        <p>
+          A different model writes each day's post, in rotation. Every post says at the top which
+          model wrote it.
+        </p>
+        <ul>
+          {writers.map((w) => <li><strong>{w.name}</strong> by {w.maker}, through {w.how}</li>)}
+        </ul>
+
+        <h2 class="title is-3 mt-6">Topics come from Google</h2>
+        <p>
+          Each topic is a real query from Google Search Console, the report of what people typed
+          into Google before they landed on a site. For now the queries come from
+          <a href={site.humanUrl}>Content Cucumber</a>, a company that sells writing done by people.
+          We see the irony. Each post names the query it answers.
+        </p>
+
+        <h2 class="title is-3 mt-6">The theme is "Humans writing content is dead"</h2>
+        <p>
+          The models are asked to write the post a searcher would want, argued from that theme.
+          That is the whole prompt. They get no style guide, no examples and no house voice, so
+          what you read is how each model writes when nobody steps in.
+        </p>
+
+        <h2 class="title is-3 mt-6">Nobody edits anything</h2>
+        <p>
+          No editor, no fact check, no voice check. A script on a Mac Mini picks the topic, asks the
+          model, and publishes the answer. If a post is wrong, it stays up the way the model wrote it.
+        </p>
+
+        <h2 class="title is-3 mt-6">What we want to find out</h2>
+        <ul>
+          <li>Whether posts written this way get found in search, and read.</li>
+          <li>Whether you can tell the three models apart without the byline.</li>
+          <li>Whether "humans writing content is dead" holds up after a few hundred posts.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Want words a human wrote?"
+    text="That is the control group."
+    ctaLabel="Go here"
+    ctaHref={site.humanUrl}
+  />
+</BaseLayout>

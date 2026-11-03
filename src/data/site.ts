@@ -23,5 +23,6 @@ export const navItems: NavItem[] = [
   { label: 'About', href: '/about/' },
   { label: 'Services', href: '/services/' },
   { label: 'Blog', href: '/blog/' },
+  { label: 'The Experiment', href: '/experiment/' },
   { label: 'Contact', href: '/contact/' },
 ];
