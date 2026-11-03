@@ -63,9 +63,20 @@ const path = Astro.url.pathname;
 </html>
 
 <style is:global>
+	:root {
+		color-scheme: dark;
+		--bg: #0b0d12;
+		--surface: #161a22;
+		--border: #262b36;
+		--text: #f3f4f6;
+		--muted: #9ca3af;
+		--link: #8b95ff;
+	}
+
 	html,
 	body {
 		margin: 0;
+		background: var(--bg);
 		width: 100%;
 		min-height: 100%;
 	}
@@ -78,6 +89,7 @@ const path = Astro.url.pathname;
 		height: 100%;
 		z-index: -1;
 		filter: blur(100px);
+		opacity: 0.35;
 	}
 
 	#container {
@@ -85,7 +97,7 @@ const path = Astro.url.pathname;
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
-		color: #111827;
+		color: var(--text);
 	}
 
 	header {
@@ -98,10 +110,10 @@ const path = Astro.url.pathname;
 	}
 
 	.logo {
-		border: 2px dashed #9ca3af;
+		border: 2px dashed #4b5563;
 		border-radius: 8px;
 		padding: 6px 12px;
-		color: #6b7280;
+		color: var(--muted);
 		font-size: 14px;
 		text-decoration: none;
 		text-transform: uppercase;
@@ -116,18 +128,18 @@ const path = Astro.url.pathname;
 
 	nav a {
 		padding: 8px 12px;
-		color: #111827;
+		color: var(--text);
 		text-decoration: none;
 		border-radius: 8px;
 		transition: color 0.2s;
 	}
 
 	nav a:hover {
-		color: rgb(78, 80, 86);
+		color: #d1d5db;
 	}
 
 	nav a[aria-current='page'] {
-		background: rgba(255, 255, 255, 0.7);
+		background: rgba(255, 255, 255, 0.08);
 	}
 
 	main {
@@ -147,17 +159,17 @@ const path = Astro.url.pathname;
 	footer p {
 		max-width: 640px;
 		margin: 0 auto;
-		color: #4b5563;
+		color: var(--muted);
 		font-size: 14px;
 	}
 
 	footer p.human {
 		margin-top: 8px;
-		color: #111827;
+		color: var(--text);
 	}
 
 	footer p.human a {
-		color: #3245ff;
+		color: var(--link);
 	}
 
 	.hero {
@@ -177,12 +189,12 @@ const path = Astro.url.pathname;
 	h2 {
 		margin: 0 0 0.5em;
 		font-weight: normal;
-		color: #111827;
+		color: var(--text);
 		font-size: 20px;
 	}
 
 	p {
-		color: #4b5563;
+		color: var(--muted);
 		font-size: 16px;
 		line-height: 24px;
 		letter-spacing: -0.006em;
@@ -192,8 +204,8 @@ const path = Astro.url.pathname;
 	code {
 		display: inline-block;
 		background:
-			linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
-			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
+			linear-gradient(66.77deg, #2a1622 0%, #2a1630 100%) padding-box,
+			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #3a2240 45%) border-box;
 		border-radius: 8px;
 		border: 1px solid transparent;
 		padding: 2px 8px;
@@ -203,7 +215,7 @@ const path = Astro.url.pathname;
 		font-family:
 			ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono',
 			monospace;
-		background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
+		background: linear-gradient(14deg, #ff6b6b 0%, #f58bff 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -220,7 +232,7 @@ const path = Astro.url.pathname;
 		display: inline-flex;
 		align-items: center;
 		padding: 10px 12px;
-		color: #111827;
+		color: var(--text);
 		text-decoration: none;
 		transition: color 0.2s;
 		font: inherit;
@@ -249,9 +261,9 @@ const path = Astro.url.pathname;
 
 	.box {
 		padding: 16px;
-		background: rgba(255, 255, 255, 1);
+		background: var(--surface);
 		border-radius: 16px;
-		border: 1px solid white;
+		border: 1px solid var(--border);
 	}
 
 	.grid {
@@ -271,7 +283,7 @@ const path = Astro.url.pathname;
 
 	.fine-print {
 		font-size: 12px;
-		color: #6b7280;
+		color: #8b93a1;
 	}
 
 	@media screen and (max-width: 768px) {
