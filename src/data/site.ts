@@ -11,6 +11,10 @@ export const site = {
   address: '404 Nowhere Lane · Anytown, USA',
   url: 'https://blandwebsite.com',
   humanUrl: 'https://contentcucumber.com/',
+  // The contact form posts to this HubSpot form (portal 39487190, form
+  // "BlandWebsite-Contact", created 2026-11-03). Submissions reach the
+  // Content Cucumber team as HubSpot contacts with campaign_code blandwebsite-contact.
+  hubspot: { portalId: '39487190', formId: '4f0c99bf-27b3-42da-a434-e6d5aba018bc' },
 } as const;
 
 export interface NavItem {

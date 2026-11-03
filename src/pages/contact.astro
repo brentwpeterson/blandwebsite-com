@@ -14,7 +14,7 @@ import waiting from '../assets/images/waiting-by-phone.png';
   <PageHero
     eyebrow="Contact"
     title="Let's connect."
-    subtitle="We would love to hear from you, in the sense that a form would love to be filled out. Nothing you type leaves your browser, which makes us the most private company on the internet."
+    subtitle="We would love to hear from you, in the sense that a form would love to be filled out. The robots do not read email, so your message goes to the humans at Content Cucumber."
     compact
   />
 
@@ -57,7 +57,7 @@ import waiting from '../assets/images/waiting-by-phone.png';
         <div class="column is-6 is-offset-1">
           <h2 class="title is-4">Send a message</h2>
 
-          <form id="contact-form">
+          <form id="contact-form" data-portal={site.hubspot.portalId} data-form={site.hubspot.formId}>
             <div class="field">
               <label class="label" for="contact-name">Name</label>
               <div class="control">
@@ -67,9 +67,30 @@ import waiting from '../assets/images/waiting-by-phone.png';
                   name="name"
                   type="text"
                   placeholder="Valued Customer"
-                  autocomplete="off"
+                  autocomplete="given-name"
+                  required
                 />
               </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="contact-email">Email</label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  placeholder="you@stakeholder.example"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="aw-hp" aria-hidden="true">
+              <label for="contact-company">Company</label>
+              <input id="contact-company" name="company" type="text" tabindex="-1" autocomplete="off" />
             </div>
 
             <div class="field">
@@ -95,9 +116,10 @@ import waiting from '../assets/images/waiting-by-phone.png';
                   id="contact-message"
                   name="message"
                   placeholder="I am reaching out to touch base and circle back."
-                  rows="5"></textarea>
+                  rows="5"
+                  required></textarea>
               </div>
-              <p class="help">We usually reply within one never.</p>
+              <p class="help">A human at Content Cucumber reads these. Expect a reply in human time.</p>
             </div>
 
             <div class="field">
@@ -114,20 +136,60 @@ import waiting from '../assets/images/waiting-by-phone.png';
   </section>
 </BaseLayout>
 
+<style>
+  .aw-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+
 <script>
-  // The form sends nothing. That is the joke and also the privacy policy.
+  // Posts to the HubSpot Forms submission API (no key, public endpoint), so the
+  // message lands with the Content Cucumber team. Hard fail: if HubSpot refuses,
+  // the visitor is told it did not send and the form keeps what they typed.
   // Delegated so it keeps working after <ClientRouter /> swaps the page, and
   // registered in the capture phase so it runs before ClientRouter's own
   // submit handler, which would otherwise turn the form into a GET navigation.
-  document.addEventListener('submit', (event) => {
+  document.addEventListener('submit', async (event) => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || form.id !== 'contact-form') return;
     event.preventDefault();
-    form.reset();
     const status = document.getElementById('contact-form-status');
-    if (status) {
-      status.textContent =
-        'Thanks! Your message has been sent to the void. A member of our team will never be in touch.';
+    const button = form.querySelector('button[type="submit"]');
+    const data = new FormData(form);
+    const say = (text) => { if (status) status.textContent = text; };
+
+    // Honeypot: people never see this field, bots fill it in.
+    if (String(data.get('company') || '').trim()) {
+      form.reset();
+      say('Thanks. A human at Content Cucumber has your message.');
+      return;
+    }
+
+    const interest = String(data.get('interest') || '');
+    const message = String(data.get('message') || '');
+    const payload = {
+      fields: [
+        { objectTypeId: '0-1', name: 'firstname', value: String(data.get('name') || '') },
+        { objectTypeId: '0-1', name: 'email', value: String(data.get('email') || '') },
+        { objectTypeId: '0-1', name: 'message', value: `Interested in: ${interest}\n\n${message}` },
+        { objectTypeId: '0-1', name: 'campaign_code', value: 'blandwebsite-contact' },
+      ],
+      context: { pageUri: window.location.href, pageName: document.title },
+    };
+
+    if (button) button.setAttribute('disabled', '');
+    say('Sending...');
+    try {
+      const res = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${form.dataset.portal}/${form.dataset.form}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) },
+      );
+      if (!res.ok) throw new Error(`HubSpot answered ${res.status}`);
+      form.reset();
+      say('Thanks. A human at Content Cucumber has your message, which makes it the least bland thing on this site.');
+    } catch (err) {
+      console.error('[contact-form]', err);
+      say('That did not send. Check the email address and try again, or reach a human at contentcucumber.com.');
+    } finally {
+      if (button) button.removeAttribute('disabled');
     }
   }, true);
 </script>
