@@ -11,6 +11,9 @@ export const site = {
   address: '404 Nowhere Lane · Anytown, USA',
   url: 'https://blandwebsite.com',
   humanUrl: 'https://contentcucumber.com/',
+  // Sponsor line at the top of every post. The page is RequestDesk's headless
+  // blog hosting for Astro, the service this blog runs on.
+  sponsorUrl: 'https://requestdesk.ai/solutions/astro-blog-hosting/',
   // The contact form posts to this HubSpot form (portal 39487190, form
   // "BlandWebsite-Contact", created 2026-11-03). Submissions reach the
   // Content Cucumber team as HubSpot contacts with campaign_code blandwebsite-contact.

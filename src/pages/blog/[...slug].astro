@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/date';
 import { getAllPosts, type Post } from '../../utils/posts';
+import { site } from '../../data/site';
 
 interface Props {
   post: Post;
@@ -43,6 +44,11 @@ const postSchema = {
   <section class="section aw-section">
     <div class="container">
       <article class="aw-prose">
+        <p class="aw-sponsor mb-5">
+          This post is sponsored by <a href={site.sponsorUrl}>RequestDesk</a>, the headless blog
+          this site runs on.
+        </p>
+
         <p class="aw-blog-meta mb-3">
           <time datetime={post.pubDate.toISOString()}>
             {formatDate(post.pubDate)}
@@ -66,7 +72,7 @@ const postSchema = {
         {Content ? <Content /> : <Fragment set:html={post.html} />}
       </article>
 
-      <p class="mt-6">
+      <p class="aw-prose mt-6">
         <a href="/blog/">← Back to all posts</a>
       </p>
     </div>
