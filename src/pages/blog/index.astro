@@ -1,0 +1,52 @@
+---
+import BlogCard from '../../components/BlogCard.astro';
+import PageHero from '../../components/PageHero.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { readingTime } from '../../utils/reading-time';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Thought leadership from Bland Website. Thoughts not guaranteed."
+>
+  <PageHero
+    eyebrow="Insights"
+    title="Thought leadership."
+    subtitle="Fresh takes on the topics everyone already wrote about, written by an AI that read all of them."
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      {
+        posts.length > 0 ? (
+          <div class="columns is-multiline">
+            {
+              posts.map((post) => (
+                <div class="column is-4">
+                  <BlogCard
+                    title={post.data.title}
+                    description={post.data.description}
+                    pubDate={post.data.pubDate}
+                    tags={post.data.tags}
+                    href={`/blog/${post.id}/`}
+                    readingTime={readingTime(post.body ?? '')}
+                  />
+                </div>
+              ))
+            }
+          </div>
+        ) : (
+          <p class="has-text-centered">
+            No posts yet. <a href="/contact">Tell us</a> what to write about and we will ignore it.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

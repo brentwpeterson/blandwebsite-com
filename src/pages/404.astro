@@ -1,0 +1,18 @@
+---
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="This page does not exist. Neither do most of our services.">
+  <PageHero
+    eyebrow="Error 404"
+    title="Page not found."
+    subtitle="This page has been moved, renamed, or was never here. Like our roadmap."
+    compact
+  >
+    <div class="buttons is-centered mt-5">
+      <a class="button is-primary is-medium" href="/">Back to home</a>
+      <a class="button is-medium is-light is-outlined" href="/contact">Contact us (pointless)</a>
+    </div>
+  </PageHero>
+</BaseLayout>

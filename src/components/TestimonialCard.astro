@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  quote: string;
+  name: string;
+  role: string;
+  initials: string;
+  image?: ImageMetadata;
+}
+
+const { quote, name, role, initials, image } = Astro.props;
+---
+
+<figure class="card aw-card">
+  <div class="card-content aw-card-content is-flex is-flex-direction-column">
+    <blockquote class="aw-testimonial-quote">“{quote}”</blockquote>
+    <figcaption class="is-flex is-align-items-center aw-testimonial-meta">
+      {
+        image ? (
+          <Image class="aw-avatar aw-avatar-photo mr-3" src={image} alt="" width={96} height={96} />
+        ) : (
+          <span class="aw-avatar mr-3" aria-hidden="true">{initials}</span>
+        )
+      }
+      <div>
+        <p class="has-text-weight-semibold">{name}</p>
+        <p class="aw-form-note">{role}</p>
+      </div>
+    </figcaption>
+  </div>
+</figure>

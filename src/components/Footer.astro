@@ -1,0 +1,54 @@
+---
+import { navItems, site } from '../data/site';
+import { telHref } from '../utils/phone';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer aw-footer">
+  <div class="container">
+    <div class="columns is-multiline">
+      <div class="column is-5">
+        <p class="title is-5 mb-2">{site.name}</p>
+        <p>{site.tagline}</p>
+      </div>
+
+      <div class="column is-3">
+        <p class="has-text-weight-semibold mb-3">Explore</p>
+        <ul>
+          {
+            navItems.map((item) => (
+              <li class="mb-1">
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="column is-4">
+        <p class="has-text-weight-semibold mb-3">Visit</p>
+        <p class="mb-1">{site.address}</p>
+        <p class="mb-3">
+          <a href={telHref(site.phone)}>{site.phone}</a>
+        </p>
+        <p class="has-text-weight-semibold mb-1">Want words a human wrote?</p>
+        <p>
+          <a href={site.humanUrl}>Go here.</a>
+        </p>
+      </div>
+    </div>
+
+    <hr />
+
+    <p class="is-size-7 mb-2">
+      © {year} {site.name}. All rights reserved, not that anyone asked. Every word and every Jack
+      Russell on this site was made by AI, which you figured out around "fast-paced digital
+      landscape."
+    </p>
+    <p class="is-size-7">
+      Theme: <a href="https://github.com/DomeT99/astro-wellness">Astro Wellness</a> by Domenico
+      Tenace (MIT). Built with Astro and Bulma.
+    </p>
+  </div>
+</footer>

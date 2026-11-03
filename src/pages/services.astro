@@ -1,77 +1,106 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '../layouts/Layout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { plans } from '../data/pricing';
+import { services } from '../data/services';
 import handshake from '../assets/images/handshake.png';
 import support from '../assets/images/support-headset.png';
 ---
 
-<Layout title="Services" description="Scalable, seamless, end-to-end services that deliver results. Results not included.">
-	<section class="hero">
-		<h1>Solutions That <code><span>Deliver Results</span></code></h1>
-		<p>
-			We offer a comprehensive suite of end-to-end services designed to empower your business. If you
-			can tell what any of them do, please contact us, because we would also like to know.
-		</p>
-	</section>
+<BaseLayout
+  title="Services"
+  description="Scalable, seamless, end-to-end services that deliver results. Results not included."
+>
+  <PageHero
+    eyebrow="Services & pricing"
+    title="Solutions that deliver results."
+    subtitle="We offer a comprehensive suite of end-to-end services designed to empower your business. If you can tell what any of them do, please contact us, because we would also like to know."
+    compact
+  />
 
-	<Image
-		class="photo"
-		src={handshake}
-		alt="Two business people shake hands on a deal in a bright lobby while a Jack Russell Terrier, the only one who read the contract, looks at the camera."
-		widths={[480, 960, 1376]}
-		sizes="(max-width: 960px) 100vw, 928px"
-	/>
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-vcentered mb-5">
+        <div class="column is-6">
+          <Image
+            class="aw-photo"
+            src={handshake}
+            alt="Two business people shake hands on a deal in a bright lobby while a Jack Russell Terrier, the only one who read the contract, looks at the camera."
+            widths={[480, 960]}
+            sizes="(max-width: 768px) 100vw, 540px"
+          />
+        </div>
+        <div class="column is-6">
+          <Image
+            class="aw-photo"
+            src={support}
+            alt="A Jack Russell Terrier in a call-center headset, ready to not understand your question."
+            widths={[480, 960]}
+            sizes="(max-width: 768px) 100vw, 540px"
+          />
+        </div>
+      </div>
 
-	<section class="grid">
-		<div class="box">
-			<h2>Seamless Integration</h2>
-			<p>We integrate things. Seamlessly. Please do not ask which things.</p>
-		</div>
-		<div class="box">
-			<h2>Scalable Growth</h2>
-			<p>This website can comfortably handle up to several visitors at once.</p>
-		</div>
-		<div class="box">
-			<Image
-				class="card-photo"
-				src={support}
-				alt="A Jack Russell Terrier in a call-center headset, ready to not understand your question."
-				widths={[320, 640]}
-				sizes="(max-width: 768px) 100vw, 300px"
-			/>
-			<h2>24/7 Support</h2>
-			<p>Our chatbot is available around the clock to tell you it did not understand the question.</p>
-		</div>
-		<div class="box">
-			<h2>Digital Transformation</h2>
-			<p>We will transform your business into a digital version of the same business.</p>
-		</div>
-		<div class="box">
-			<h2>Thought Leadership</h2>
-			<p>We have thoughts. We are leading with them. This is one of them.</p>
-		</div>
-		<div class="box">
-			<h2>Pricing</h2>
-			<p>Contact us for pricing. There is no pricing.</p>
-		</div>
-	</section>
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">What we do</p>
+        <h2 class="title is-2">Our services</h2>
+      </div>
 
-	<section class="links cta">
-		<a class="button" href="/contact/">Let's Talk</a>
-		<a href="/about/">Learn even more &rarr;</a>
-	</section>
-</Layout>
+      <div class="columns is-multiline">
+        {
+          services.map((service) => (
+            <div class="column is-4">
+              <ServiceCard {...service} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-<style>
-	.card-photo {
-		display: block;
-		width: 100%;
-		height: auto;
-		border-radius: 10px;
-		margin-bottom: 12px;
-	}
+  <section class="section aw-section aw-section-alt">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">Pricing</p>
+        <h2 class="title is-2">Plans that scale with you</h2>
+        <p class="subtitle is-6">Every plan costs the same, which is nothing, because nothing is for sale.</p>
+      </div>
 
-	.cta {
-		margin-bottom: 48px;
-	}
-</style>
+      <div class="columns" style="--column-gap: 1.5rem">
+        {
+          plans.map((plan) => (
+            <div class="column is-4">
+              <div class:list={['box aw-card aw-plan', { 'is-highlighted': plan.highlighted }]}>
+                {plan.highlighted && <div class="aw-plan-badge">Most popular</div>}
+                <h3 class="title is-4">{plan.name}</h3>
+                <p class="aw-price mb-2">
+                  {plan.price} <span>{plan.period}</span>
+                </p>
+                <p class="mb-4">{plan.description}</p>
+                <ul class="aw-check-list mb-4">
+                  {plan.features.map((feature) => <li>{feature}</li>)}
+                </ul>
+                <a
+                  class:list={['button is-fullwidth', plan.highlighted ? 'is-primary' : 'is-light is-outlined']}
+                  href="/contact"
+                >
+                  Choose {plan.name}
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Not sure which plan?"
+    title="Let's talk."
+    text="Our team is standing by to recommend the plan that is right for you. They are all the same plan."
+    ctaLabel="Let's Talk"
+  />
+</BaseLayout>

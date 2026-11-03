@@ -1,88 +1,133 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { telHref } from '../utils/phone';
 import waiting from '../assets/images/waiting-by-phone.png';
 ---
 
-<Layout title="Contact Us" description="Reach out to Bland Website. We would love to hear from you, in the way a form loves to be filled out.">
-	<section class="hero">
-		<h1>Let's <code><span>Connect</span></code></h1>
-		<p>
-			We would love to hear from you, in the sense that a form would love to be filled out. Type
-			anything below. Nothing you type leaves your browser, which makes us the most private company
-			on the internet.
-		</p>
-	</section>
+<BaseLayout
+  title="Contact"
+  description="Reach out to Bland Website. We would love to hear from you, in the way a form loves to be filled out."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let's connect."
+    subtitle="We would love to hear from you, in the sense that a form would love to be filled out. Nothing you type leaves your browser, which makes us the most private company on the internet."
+    compact
+  />
 
-	<Image
-		class="photo"
-		src={waiting}
-		alt="A Jack Russell Terrier at an office desk stares at a beige telephone, waiting for your call. It will not ring."
-		widths={[480, 960, 1376]}
-		sizes="(max-width: 960px) 100vw, 928px"
-	/>
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-5">
+          <Image
+            class="aw-photo mb-5"
+            src={waiting}
+            alt="A Jack Russell Terrier at an office desk stares at a beige telephone, waiting for your call. It will not ring."
+            widths={[480, 960]}
+            sizes="(max-width: 768px) 100vw, 440px"
+          />
 
-	<form class="box contact" id="contact-form">
-		<label>
-			Your name
-			<input type="text" name="name" placeholder="Valued Customer" autocomplete="off" />
-		</label>
-		<label>
-			How can we help?
-			<textarea name="message" rows="4" placeholder="I am reaching out to touch base and circle back."
-			></textarea>
-		</label>
-		<button class="button" type="submit">Submit</button>
-		<p class="thanks" id="thanks" hidden>
-			Thanks! Your message has been sent to the void. A member of our team will never be in touch.
-		</p>
-	</form>
-</Layout>
+          <h2 class="title is-4">Find us</h2>
+          <div class="aw-contact-list">
+            <div>
+              <p class="aw-contact-label mb-1">Headquarters</p>
+              <p>{site.address}</p>
+            </div>
+            <div>
+              <p class="aw-contact-label mb-1">Phone</p>
+              <a href={telHref(site.phone)}>{site.phone}</a>
+            </div>
+            <div>
+              <p class="aw-contact-label mb-1">Office hours</p>
+              <p>
+                Mon–Fri · By appointment<br />
+                Appointments · Not available
+              </p>
+            </div>
+          </div>
+
+          <div class="aw-notice mt-5">
+            Want a reply from a real person? <a href={site.humanUrl}>Go here.</a>
+          </div>
+        </div>
+
+        <div class="column is-6 is-offset-1">
+          <h2 class="title is-4">Send a message</h2>
+
+          <form id="contact-form">
+            <div class="field">
+              <label class="label" for="contact-name">Name</label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  placeholder="Valued Customer"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="contact-interest">I am interested in</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="contact-interest" name="interest">
+                    <option>Synergy</option>
+                    <option>Solutions</option>
+                    <option>Leveraging things</option>
+                    <option>Circling back</option>
+                    <option>Not sure yet (same)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="contact-message">How can we help?</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  id="contact-message"
+                  name="message"
+                  placeholder="I am reaching out to touch base and circle back."
+                  rows="5"></textarea>
+              </div>
+              <p class="help">We usually reply within one never.</p>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary" type="submit">Submit</button>
+              </div>
+            </div>
+
+            <p id="contact-form-status" class="aw-form-note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
 
 <script>
-	const form = document.getElementById('contact-form') as HTMLFormElement | null;
-	const thanks = document.getElementById('thanks');
-	form?.addEventListener('submit', (event) => {
-		event.preventDefault();
-		form.reset();
-		if (thanks) thanks.hidden = false;
-	});
+  // The form sends nothing. That is the joke and also the privacy policy.
+  // Delegated so it keeps working after <ClientRouter /> swaps the page, and
+  // registered in the capture phase so it runs before ClientRouter's own
+  // submit handler, which would otherwise turn the form into a GET navigation.
+  document.addEventListener('submit', (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || form.id !== 'contact-form') return;
+    event.preventDefault();
+    form.reset();
+    const status = document.getElementById('contact-form-status');
+    if (status) {
+      status.textContent =
+        'Thanks! Your message has been sent to the void. A member of our team will never be in touch.';
+    }
+  }, true);
 </script>
-
-<style>
-	.contact {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-		max-width: 520px;
-		margin-bottom: 48px;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-		color: var(--text);
-		font-size: 14px;
-	}
-
-	input,
-	textarea {
-		font: inherit;
-		font-size: 16px;
-		padding: 10px 12px;
-		border: 1px solid var(--border);
-		border-radius: 10px;
-		background: var(--bg);
-		color: var(--text);
-	}
-
-	.contact .button {
-		align-self: start;
-	}
-
-	.thanks {
-		margin: 0;
-		color: var(--text);
-	}
-</style>

@@ -1,67 +1,142 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '../layouts/Layout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import LatestPosts from '../components/LatestPosts.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { services } from '../data/services';
+import { site } from '../data/site';
+import { testimonials } from '../data/testimonials';
 import ceoDesk from '../assets/images/ceo-desk.png';
+import sarah from '../assets/images/sarah-j-headshot.png';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  description: site.description,
+  url: site.url,
+};
+
+const featuredServices = services.slice(0, 3);
+
+const stats = [
+  { value: '0', label: 'Clients served' },
+  { value: '24/7', label: 'Synergy' },
+  { value: '100%', label: 'Written by AI' },
+  { value: '6', label: 'Jack Russell photos' },
+];
 ---
 
-<Layout title="Home">
-	<section class="hero">
-		<h1>
-			Welcome to our website. We are passionate about delivering{' '}
-			<code><span>innovative solutions</span></code>{' '}
-			in today's fast-paced digital landscape.
-		</h1>
-		<p>
-			We built this site with the default Astro template, the default fonts, and an AI that has read
-			every About Us page on the internet. Nothing here will surprise you. That is the product.
-		</p>
-		<section class="links">
-			<a class="button" href="/about/">Learn More</a>
-			<a href="/services/">Get Started &rarr;</a>
-		</section>
-	</section>
+<BaseLayout title={site.name} description={site.description} schema={organizationSchema}>
+  <PageHero
+    eyebrow="Innovation · Synergy · Solutions"
+    title="Welcome to our website."
+    subtitle="We are passionate about delivering innovative solutions in today's fast-paced digital landscape. We built this site with a free template and an AI that has read every About Us page on the internet. Nothing here will surprise you. That is the product."
+  >
+    <div class="buttons mt-5">
+      <a class="button is-primary is-medium" href="/contact">Get Started</a>
+      <a class="button is-medium is-light is-outlined" href="/services">Learn More</a>
+    </div>
 
-	<Image
-		class="photo"
-		src={ceoDesk}
-		alt="Our CEO, a Jack Russell Terrier in a navy suit and tie, standing on an office chair at a laptop and ready to leverage synergy."
-		widths={[480, 960, 1376]}
-		sizes="(max-width: 960px) 100vw, 928px"
-		loading="eager"
-	/>
+    <Fragment slot="aside">
+      <Image
+        class="aw-photo"
+        src={ceoDesk}
+        alt="A Jack Russell Terrier in a navy suit and tie stands on an office chair at a desk, ready to lead."
+        widths={[480, 960]}
+        sizes="(max-width: 768px) 100vw, 480px"
+        loading="eager"
+      />
+    </Fragment>
+  </PageHero>
 
-	<section class="grid">
-		<div class="box">
-			<h2>Best-in-Class</h2>
-			<p>We have not met the rest of the class, but we feel good about our chances.</p>
-		</div>
-		<div class="box">
-			<h2>Customer-Centric</h2>
-			<p>Our customers are at the center of everything we do. We would like to meet one.</p>
-		</div>
-		<div class="box">
-			<h2>Results-Driven</h2>
-			<p>The results are this website. You are looking at the results.</p>
-		</div>
-	</section>
+  <section class="section aw-section" aria-label="Company statistics">
+    <div class="container">
+      <div class="columns has-text-centered">
+        {
+          stats.map((stat) => (
+            <div class="column">
+              <span class="aw-stat-number">{stat.value}</span>
+              <span class="aw-stat-label">{stat.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-	<a href="/services/" class="box news">
-		<h2>What's New at Bland Website?</h2>
-		<p>Nothing. We checked twice. Click anyway to explore our unwavering commitment to excellence.</p>
-	</a>
-</Layout>
+  <section class="section aw-section aw-section-alt">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">What we offer</p>
+        <h2 class="title is-2">Solutions that deliver results</h2>
+        <p class="subtitle is-6">Results not included. Solutions sold separately.</p>
+      </div>
 
-<style>
-	.news {
-		display: block;
-		max-width: 360px;
-		margin: 0 0 48px auto;
-		text-decoration: none;
-		transition: background 0.2s;
-		backdrop-filter: blur(50px);
-	}
+      <div class="columns">
+        {
+          featuredServices.map((service) => (
+            <div class="column is-4">
+              <ServiceCard {...service} />
+            </div>
+          ))
+        }
+      </div>
 
-	.news:hover {
-		background: #1f2430;
-	}
-</style>
+      <div class="has-text-centered mt-6">
+        <a class="button is-medium is-light is-outlined" href="/services">See all services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-7">
+          <p class="aw-quote mb-4">
+            “We are passionate about our passion. Every morning I wake up and ask how we can
+            add value. Then I nap, because I am a dog.”
+          </p>
+          <p class="has-text-weight-semibold">The Jack Russell, Founder</p>
+        </div>
+        <div class="column is-5 has-text-centered">
+          <a class="button is-primary is-medium" href="/contact">Let's Connect</a>
+          <p class="aw-form-note mt-3">Nothing happens after you click. That is our promise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section aw-section-alt">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">Testimonials</p>
+        <h2 class="title is-2">What customers say</h2>
+        <p class="subtitle is-6">We do not have customers. These are what they would say.</p>
+      </div>
+
+      <div class="columns">
+        {
+          testimonials.map((testimonial, index) => (
+            <div class="column is-4">
+              <TestimonialCard {...testimonial} image={index === 0 ? sarah : undefined} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <LatestPosts />
+
+  <CtaBand
+    eyebrow="Ready when you are"
+    title="Let's take your business to the next level."
+    text="We do not know what level you are on. We are confident there is a next one."
+    ctaLabel="Get Started"
+    ctaHref="/contact"
+  />
+</BaseLayout>

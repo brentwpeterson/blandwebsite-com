@@ -1,0 +1,5 @@
+# Allow all crawlers by default.
+User-agent: *
+Allow: /
+
+Sitemap: https://blandwebsite.com/sitemap-index.xml

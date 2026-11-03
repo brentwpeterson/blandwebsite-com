@@ -1,78 +1,111 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '../layouts/Layout.astro';
-import team from '../assets/images/team-high-five.png';
-import sarah from '../assets/images/sarah-j-headshot.png';
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { team, values } from '../data/team';
+import teamPhoto from '../assets/images/team-high-five.png';
 ---
 
-<Layout title="About Us" description="The story of Bland Website, a journey of passion, innovation, and buying a domain on a Monday afternoon.">
-	<section class="hero">
-		<h1>Our <code><span>Story</span></code></h1>
-		<p>
-			Bland Website was founded in 2026 by someone who bought a domain on a Monday afternoon. Since
-			then we have grown from a single idea into a single page, and then, through sheer
-			determination, into four pages.
-		</p>
-		<p>
-			We believe in people. We believe in technology. Most of all, we believe in the power of people
-			and technology coming together, which is the sentence every About page has to contain by law.
-		</p>
-	</section>
+<BaseLayout
+  title="About"
+  description="Learn about the team behind Bland Website and the values we picked from a dropdown."
+>
+  <PageHero
+    eyebrow="About us"
+    title="Our story."
+    subtitle="Founded in 2026 by a Jack Russell and an AI, Bland Website set out to change the way people think about websites. It did not, and here we are."
+    compact
+  />
 
-	<Image
-		class="photo"
-		src={team}
-		alt="Our team high-fiving around a conference table while the Jack Russell Terrier in the big chair, who runs the place, stays calm."
-		widths={[480, 960, 1376]}
-		sizes="(max-width: 960px) 100vw, 928px"
-	/>
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-7">
+          <h2 class="title is-2 mb-4">Why we exist</h2>
+          <div class="content">
+            <p>
+              Every company needs a website, and every website needs an About page, and every About
+              page needs three paragraphs. This is the first paragraph.
+            </p>
+            <p>
+              We believe in collaboration, which is why our team high-fives in every photo. We do not
+              know what we are celebrating. We celebrate it often.
+            </p>
+            <p>
+              Today we offer a comprehensive suite of end-to-end services. This is the third
+              paragraph, and we are proud to have reached it together.
+            </p>
+          </div>
+        </div>
+        <div class="column is-5">
+          <Image
+            class="aw-photo"
+            src={teamPhoto}
+            alt="Office workers high-five over a conference table while a Jack Russell Terrier jumps up to join the celebration."
+            widths={[480, 960]}
+            sizes="(max-width: 768px) 100vw, 420px"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<section class="grid">
-		<div class="box">
-			<h2>Our Mission</h2>
-			<p>To leverage synergy. We were told to write that down and we did.</p>
-		</div>
-		<div class="box">
-			<h2>Our Vision</h2>
-			<p>A world where every website looks exactly like this one. We are closer than you think.</p>
-		</div>
-		<div class="box">
-			<h2>Our Values</h2>
-			<p>Integrity. Innovation. Whatever the third one usually is.</p>
-		</div>
-	</section>
+  <section class="section aw-section aw-section-alt">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">What guides us</p>
+        <h2 class="title is-2">Mission, vision, values</h2>
+      </div>
 
-	<section class="box testimonial">
-		<Image
-			class="headshot"
-			src={sarah}
-			alt="Professional headshot of Sarah J., a Jack Russell Terrier in a blue collar and pearls."
-			width={120}
-			height={120}
-			densities={[1, 2]}
-		/>
-		<p class="quote">"This website met my expectations, which were low."</p>
-		<p>Sarah J., Satisfied Customer*</p>
-		<p class="fine-print">*Not a customer. Not satisfied. Possibly not Sarah.</p>
-	</section>
-</Layout>
+      <div class="columns">
+        {
+          values.map((value, index) => (
+            <div class="column is-4">
+              <div class="box aw-card">
+                <p class="aw-value-number mb-2">{String(index + 1).padStart(2, '0')}</p>
+                <h3 class="title is-5">{value.title}</h3>
+                <p>{value.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-<style>
-	.testimonial {
-		margin-bottom: 48px;
-	}
+  <section class="section aw-section">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">The team</p>
+        <h2 class="title is-2">Meet the people (and dog)</h2>
+        <p class="subtitle is-6">A dedicated team of professionals. Two of them exist.</p>
+      </div>
 
-	.headshot {
-		display: block;
-		width: 120px;
-		height: 120px;
-		border-radius: 50%;
-		margin-bottom: 16px;
-	}
+      <div class="columns">
+        {
+          team.map((member) => (
+            <div class="column is-3">
+              <div class="box aw-card">
+                <div class="is-flex is-align-items-center mb-4">
+                  <span class="aw-avatar mr-4" aria-hidden="true">{member.initials}</span>
+                  <div>
+                    <h3 class="title is-5 mb-1">{member.name}</h3>
+                    <p class="aw-form-note">{member.role}</p>
+                  </div>
+                </div>
+                <p>{member.bio}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-	.quote {
-		font-size: 20px;
-		line-height: 1.5;
-		color: var(--text);
-	}
-</style>
+  <CtaBand
+    eyebrow="Join the journey"
+    title="We would love to partner with you."
+    text="We do not know what partnering means here either, but the button is very nice."
+  />
+</BaseLayout>
