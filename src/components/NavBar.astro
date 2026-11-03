@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { navItems, site } from '../data/site';
+import logo from '../assets/images/finn-thumbsup.webp';
 
 const currentPath = Astro.url.pathname;
 
@@ -13,12 +15,15 @@ function isActive(href: string): boolean {
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item aw-brand" href="/">
-          <span class="aw-brand-mark" aria-hidden="true">
-            {/* Your logo here. We never got around to it. */}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2">
-              <rect x="3" y="3" width="18" height="18" rx="3" />
-            </svg>
-          </span>
+          <Image
+            class="aw-brand-logo"
+            src={logo}
+            alt=""
+            width={54}
+            height={48}
+            loading="eager"
+            aria-hidden="true"
+          />
           {site.name}
         </a>
 

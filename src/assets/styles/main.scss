@@ -155,7 +155,15 @@ main {
   }
 }
 
-// Small dumbbell mark; replace with your logo if you have one.
+// Finn, thumbs up. The logo.
+.navbar-item .aw-brand-logo {
+  display: block;
+  width: auto;
+  height: 2.6rem;
+  max-height: none;
+  margin-right: 0.6rem;
+}
+
 .aw-brand-mark {
   display: inline-block;
   width: 1.15rem;
