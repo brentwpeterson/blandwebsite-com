@@ -686,3 +686,12 @@ html {
   object-fit: cover;
   padding: 0;
 }
+
+// Images inside post bodies (RequestDesk posts arrive as raw HTML)
+.aw-prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
