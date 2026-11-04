@@ -22,7 +22,7 @@ const posts = await getAllPosts();
     <div class="container">
       {
         posts.length > 0 ? (
-          <div class="columns is-multiline">
+          <div class="columns is-multiline is-centered">
             {
               posts.map((post) => (
                 <div class="column is-4">
@@ -33,6 +33,8 @@ const posts = await getAllPosts();
                     tags={post.tags}
                     href={`/blog/${post.slug}/`}
                     readingTime={post.readingTime}
+                    image={post.featuredImage}
+                    imageAlt={post.featuredImageAlt}
                   />
                 </div>
               ))

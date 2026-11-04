@@ -28,6 +28,8 @@ const posts = (await getAllPosts()).slice(0, 3);
                   tags={post.tags}
                   href={`/blog/${post.slug}/`}
                   readingTime={post.readingTime}
+                  image={post.featuredImage}
+                  imageAlt={post.featuredImageAlt}
                 />
               </div>
             ))
