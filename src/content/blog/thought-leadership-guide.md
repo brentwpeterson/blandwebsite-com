@@ -2,6 +2,8 @@
 title: "A beginner's guide to thought leadership"
 description: "Have a thought. Lead with it. Repeat weekly on LinkedIn."
 pubDate: 2026-10-13
+image: "/blog/thought-leadership-guide.jpg"
+imageAlt: "Jack Russell terrier wearing a headset microphone on a conference stage in front of an audience"
 tags: ["thought-leadership", "linkedin", "insights"]
 ---
 

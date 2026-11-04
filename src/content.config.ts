@@ -17,6 +17,9 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    // Featured image under public/, e.g. /blog/<slug>.jpg. Every post has one (Brent, 2026-11-04).
+    image: z.string(),
+    imageAlt: z.string(),
   }),
 });
 

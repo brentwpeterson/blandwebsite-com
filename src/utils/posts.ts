@@ -108,6 +108,8 @@ function fromMarkdown(entry: CollectionEntry<'blog'>): Post {
     readingTime: readingTime(entry.body ?? ''),
     source: 'markdown',
     entry,
+    featuredImage: entry.data.image,
+    featuredImageAlt: entry.data.imageAlt,
   };
 }
 

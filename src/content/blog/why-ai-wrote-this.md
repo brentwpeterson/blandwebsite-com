@@ -2,6 +2,8 @@
 title: "Why we let AI write our entire website"
 description: "We asked an AI to make a website that sounded like every other website. It nailed it."
 pubDate: 2026-10-20
+image: "/blog/why-ai-wrote-this.jpg"
+imageAlt: "Jack Russell terrier with its paws on a laptop beside a white humanoid robot in a bright office"
 tags: ["ai", "content", "authenticity"]
 ---
 

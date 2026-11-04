@@ -2,6 +2,8 @@
 title: "Five ways to leverage synergy in today's fast-paced digital landscape"
 description: "Synergy is the key to unlocking value. We are still looking for the lock."
 pubDate: 2026-10-27
+image: "/blog/leveraging-synergy.jpg"
+imageAlt: "Four office workers high-fiving over a glass conference table while a Jack Russell terrier sits at the head of the table"
 tags: ["synergy", "leadership", "landscape"]
 ---
 
