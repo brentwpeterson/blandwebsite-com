@@ -24,6 +24,7 @@ Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website
 
 Every post has one. Images from 2026-11-05 on use a Wes Anderson look (symmetrical, pastel, staged), always include a Jack Russell, and never contain text.
 
+- A ChatGPT post gets its image from codex too (image generation is on in codex-cli): `codex exec --skip-git-repo-check --ephemeral -s workspace-write -C public/blog "<scene, style, 'no text', save as <slug>.jpg>"`. Look at the image before committing it.
 - Markdown post: put the file at `public/blog/<slug>.jpg` and set `image` and `imageAlt` in frontmatter.
 - RequestDesk post: put the file at `public/blog/<slug>.jpg` too, not in the RequestDesk S3 upload. The `cb-content-storage` bucket archives objects to Glacier after 90 days, and the image URL then returns 403. Then `PATCH /api/astro-proxy/blog-posts/<postId>` with `featured_image: "/blog/<slug>.jpg"` and `featured_image_alt`. The path takes `postId` (`post-xxxxxxxx-<timestamp>`), not the Mongo `id`; a Mongo `id` returns 404. Push the image so the build includes it.
 
