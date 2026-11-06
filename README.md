@@ -16,6 +16,13 @@ Posts come from two places, merged newest first by `src/utils/posts.ts`:
 
 Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website" Astro site record, which rebuilds the site. The build needs `AGENT_API_KEY` and `BACKEND_URL` (Amplify branch env vars; `.env` locally, gitignored) and fails loudly without them, so a broken key never ships a blog with the RequestDesk posts silently missing. A slug used by both sources also fails the build.
 
+### Q&A and structured data
+
+Every post has BlogPosting and FAQPage structured data, and the FAQPage is built from the same Q&A the page shows under the post. A post with no Q&A fails the build, naming the slug.
+
+- Markdown post: a `qa` list of `question` and `answer` in frontmatter.
+- RequestDesk post: a `<section class="aw-qa" data-qa>` at the end of the HTML, holding `<h3>` question and `<p>` answer pairs. `src/utils/posts.ts` takes the section out of the body and the post page renders it. The daily job asks the model for 3 Q&As in the same run and writes this section; to add one to an existing post, PATCH its `content` with the section appended.
+
 ### Best used AI terms
 
 `/best-used-ai-terms/` lists the readable (term and phrase) entries from RequestDesk's public feed `/api/public/content-terms?term_type=avoid`, the same feed as requestdesk.ai/over-used-ai-terms. `src/utils/terms.ts` reads it at build time with the same `BACKEND_URL` and `AGENT_API_KEY`. A failed fetch or an empty list fails the build.

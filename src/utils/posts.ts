@@ -13,6 +13,11 @@ import { readingTime } from './reading-time';
  * build stops instead and Amplify keeps serving the last good deploy.
  */
 
+export interface QaPair {
+  question: string;
+  answer: string;
+}
+
 export interface Post {
   slug: string;
   title: string;
@@ -28,6 +33,8 @@ export interface Post {
   html?: string;
   featuredImage?: string;
   featuredImageAlt?: string;
+  /** Shown under the post and marked up as FAQPage. Never empty: a post without one fails the build. */
+  qa: QaPair[];
 }
 
 interface RdPost {
@@ -56,6 +63,31 @@ function env(name: string): string {
 
 const stripHtml = (html: string) => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
+const decodeEntities = (s: string) =>
+  s
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;|&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&');
+
+/**
+ * RequestDesk posts carry their Q&A at the end of the HTML as
+ * <section class="aw-qa" data-qa><h2>…</h2><h3>question</h3><p>answer</p>…</section>
+ * (written by .claude/local/bland-autopost.py). The section is taken out of the body
+ * and the post page renders it, the same as a Markdown post's frontmatter qa.
+ */
+function splitQa(html: string): { body: string; qa: QaPair[] } {
+  const m = html.match(/<section[^>]*\bdata-qa\b[^>]*>([\s\S]*?)<\/section>/i);
+  if (!m) return { body: html, qa: [] };
+  const qa: QaPair[] = [];
+  for (const pair of m[1].matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)) {
+    qa.push({ question: decodeEntities(stripHtml(pair[1])), answer: decodeEntities(stripHtml(pair[2])) });
+  }
+  return { body: html.replace(m[0], ''), qa };
+}
+
 async function fetchRequestDeskPosts(): Promise<RdPost[]> {
   const key = env('AGENT_API_KEY');
   const base = env('BACKEND_URL').replace(/\/$/, '');
@@ -80,7 +112,8 @@ async function fetchRequestDeskPosts(): Promise<RdPost[]> {
 }
 
 function fromRequestDesk(p: RdPost): Post {
-  const text = stripHtml(p.content ?? '');
+  const { body, qa } = splitQa(p.content ?? '');
+  const text = stripHtml(body);
   const description = p.excerpt || p.seo_description || text.slice(0, 160);
   return {
     slug: p.slug,
@@ -91,9 +124,10 @@ function fromRequestDesk(p: RdPost): Post {
     tags: p.tags?.length ? p.tags : (p.categories ?? []),
     readingTime: readingTime(text),
     source: 'requestdesk',
-    html: p.content ?? '',
+    html: body,
     featuredImage: p.featured_image || undefined,
     featuredImageAlt: p.featured_image_alt || p.title,
+    qa,
   };
 }
 
@@ -110,6 +144,7 @@ function fromMarkdown(entry: CollectionEntry<'blog'>): Post {
     entry,
     featuredImage: entry.data.image,
     featuredImageAlt: entry.data.imageAlt,
+    qa: entry.data.qa,
   };
 }
 
@@ -126,6 +161,12 @@ export function getAllPosts(): Promise<Post[]> {
         throw new Error(`Duplicate blog slug "${p.slug}" between Markdown and RequestDesk. Rename one.`);
       }
       seen.add(p.slug);
+      // Every post ships with Q&A and FAQPage (Brent, 2026-11-05 and 2026-11-06).
+      if (p.qa.length === 0) {
+        throw new Error(
+          `Blog post "${p.slug}" (${p.source}) has no Q&A. Add qa to its frontmatter, or a <section data-qa> to its RequestDesk HTML.`,
+        );
+      }
     }
     return posts.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
   })();

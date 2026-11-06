@@ -20,6 +20,8 @@ const blog = defineCollection({
     // Featured image under public/, e.g. /blog/<slug>.jpg. Every post has one (Brent, 2026-11-04).
     image: z.string(),
     imageAlt: z.string(),
+    // Q&A shown under the post and marked up as FAQPage. Every post has at least one (Brent, 2026-11-06).
+    qa: z.array(z.object({ question: z.string().min(1), answer: z.string().min(1) })).min(1),
   }),
 });
 

@@ -5,6 +5,13 @@ pubDate: 2026-10-27
 image: "/blog/leveraging-synergy.jpg"
 imageAlt: "Four office workers high-fiving over a glass conference table while a Jack Russell terrier sits at the head of the table"
 tags: ["synergy", "leadership", "landscape"]
+qa:
+  - question: "What is synergy?"
+    answer: "Synergy is when the whole is greater than the sum of its parts. Nobody has measured the parts, so the claim is safe."
+  - question: "How do I know if I have broken down a silo?"
+    answer: "You will hold a meeting about it. If the meeting is scheduled, the silo is considered broken down."
+  - question: "What does circling back accomplish?"
+    answer: "It moves the decision to a later meeting. Circling is a shape, and the post counts shapes as progress."
 ---
 
 In today's fast-paced digital landscape, businesses need to move fast. That is

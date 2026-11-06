@@ -34,13 +34,25 @@ const postSchema = {
   url: canonical,
   author: { '@type': 'Organization', name: 'Bland Website' },
 };
+// Built from the same list the page renders, so the schema matches the visible Q&A.
+const faqSchema = {
+  '@type': 'FAQPage',
+  '@id': `${canonical.href}#questions`,
+  mainEntity: post.qa.map((q) => ({
+    '@type': 'Question',
+    name: q.question,
+    acceptedAnswer: { '@type': 'Answer', text: q.answer },
+  })),
+};
+const { '@context': context, ...blogPosting } = postSchema;
+const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
 ---
 
 <BaseLayout
   title={post.title}
   description={post.description}
   ogType="article"
-  schema={postSchema}
+  schema={schema}
   image={post.featuredImage}
 >
   <section class="section aw-section">
@@ -72,6 +84,18 @@ const postSchema = {
         }
 
         {Content ? <Content /> : <Fragment set:html={post.html} />}
+
+        <section class="aw-qa mt-6" id="questions">
+          <h2>Questions and answers</h2>
+          {
+            post.qa.map((q) => (
+              <>
+                <h3>{q.question}</h3>
+                <p>{q.answer}</p>
+              </>
+            ))
+          }
+        </section>
       </article>
 
       <p class="aw-prose mt-6">
