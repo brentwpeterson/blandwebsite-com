@@ -29,7 +29,8 @@ const postSchema = {
   description: post.description,
   datePublished: post.pubDate.toISOString(),
   ...(post.updatedDate && { dateModified: post.updatedDate.toISOString() }),
-  ...(post.featuredImage && { image: post.featuredImage }),
+  // schema.org wants an absolute image URL; featuredImage is often a /blog/... path.
+  ...(post.featuredImage && { image: new URL(post.featuredImage, Astro.site).href }),
   url: canonical,
   author: { '@type': 'Organization', name: 'Bland Website' },
 };
@@ -40,6 +41,7 @@ const postSchema = {
   description={post.description}
   ogType="article"
   schema={postSchema}
+  image={post.featuredImage}
 >
   <section class="section aw-section">
     <div class="container">
