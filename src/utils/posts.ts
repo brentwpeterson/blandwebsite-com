@@ -35,6 +35,8 @@ export interface Post {
   featuredImageAlt?: string;
   /** Shown under the post and marked up as FAQPage. Never empty: a post without one fails the build. */
   qa: QaPair[];
+  /** Markdown posts: the AI and exact model that wrote it. RequestDesk posts carry the byline in their HTML. */
+  writtenBy?: { llm: string; model: string };
 }
 
 interface RdPost {
@@ -145,6 +147,7 @@ function fromMarkdown(entry: CollectionEntry<'blog'>): Post {
     featuredImage: entry.data.image,
     featuredImageAlt: entry.data.imageAlt,
     qa: entry.data.qa,
+    writtenBy: entry.data.writtenBy,
   };
 }
 
@@ -162,6 +165,10 @@ export function getAllPosts(): Promise<Post[]> {
       }
       seen.add(p.slug);
       // Every post ships with Q&A and FAQPage (Brent, 2026-11-05 and 2026-11-06).
+      // Every post is signed with the AI and the exact model that wrote it (Brent, 2026-11-06).
+      if (p.source === 'requestdesk' && !/class="aw-ai-byline"[^>]*>Written by [^<(]+\([^)<]+\)/.test(p.html ?? '')) {
+        throw new Error(`Blog post "${p.slug}" (requestdesk) has no "Written by <AI> (<model>)" byline.`);
+      }
       if (p.qa.length === 0) {
         throw new Error(
           `Blog post "${p.slug}" (${p.source}) has no Q&A. Add qa to its frontmatter, or a <section data-qa> to its RequestDesk HTML.`,

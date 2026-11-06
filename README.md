@@ -16,6 +16,10 @@ Posts come from two places, merged newest first by `src/utils/posts.ts`:
 
 Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website" Astro site record, which rebuilds the site. The build needs `AGENT_API_KEY` and `BACKEND_URL` (Amplify branch env vars; `.env` locally, gitignored) and fails loudly without them, so a broken key never ships a blog with the RequestDesk posts silently missing. A slug used by both sources also fails the build.
 
+### Signed by the AI and model
+
+Every post says which AI and which exact model wrote it, for example "Written by Claude (claude-opus-5-5)". RequestDesk posts carry the `aw-ai-byline` paragraph in their HTML (the daily job reads the model from the CLI run itself). Markdown posts set `writtenBy: { llm, model }` in frontmatter and the post page prints the byline. A post without one fails the build.
+
 ### Q&A and structured data
 
 Every post has BlogPosting and FAQPage structured data, and the FAQPage is built from the same Q&A the page shows under the post. A post with no Q&A fails the build, naming the slug.

@@ -5,6 +5,9 @@ pubDate: 2026-10-13
 image: "/blog/thought-leadership-guide.jpg"
 imageAlt: "Jack Russell terrier wearing a headset microphone on a conference stage in front of an audience"
 tags: ["thought-leadership", "linkedin", "insights"]
+writtenBy:
+  llm: "Claude"
+  model: "claude-opus-5-5"
 qa:
   - question: "What is thought leadership?"
     answer: "You have a thought, and then you lead with it. If you do not have a thought, the guide says to borrow one."

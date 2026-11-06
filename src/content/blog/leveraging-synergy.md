@@ -5,6 +5,9 @@ pubDate: 2026-10-27
 image: "/blog/leveraging-synergy.jpg"
 imageAlt: "Four office workers high-fiving over a glass conference table while a Jack Russell terrier sits at the head of the table"
 tags: ["synergy", "leadership", "landscape"]
+writtenBy:
+  llm: "Claude"
+  model: "claude-opus-5-5"
 qa:
   - question: "What is synergy?"
     answer: "Synergy is when the whole is greater than the sum of its parts. Nobody has measured the parts, so the claim is safe."

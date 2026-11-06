@@ -5,6 +5,9 @@ pubDate: 2026-10-20
 image: "/blog/why-ai-wrote-this.jpg"
 imageAlt: "Jack Russell terrier with its paws on a laptop beside a white humanoid robot in a bright office"
 tags: ["ai", "content", "authenticity"]
+writtenBy:
+  llm: "Claude"
+  model: "claude-opus-5-5"
 qa:
   - question: "Did AI really write this whole website?"
     answer: "Yes. Every word and every photo on blandwebsite.com was made by AI, and no human edited any of it."

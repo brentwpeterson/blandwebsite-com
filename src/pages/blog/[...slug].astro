@@ -83,6 +83,14 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
           )
         }
 
+        {
+          post.writtenBy && (
+            <p class="aw-ai-byline">
+              Written by {post.writtenBy.llm} ({post.writtenBy.model}). No human edited this post.
+            </p>
+          )
+        }
+
         {Content ? <Content /> : <Fragment set:html={post.html} />}
 
         <section class="aw-qa mt-6" id="questions">
