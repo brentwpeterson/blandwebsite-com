@@ -16,6 +16,10 @@ Posts come from two places, merged newest first by `src/utils/posts.ts`:
 
 Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website" Astro site record, which rebuilds the site. The build needs `AGENT_API_KEY` and `BACKEND_URL` (Amplify branch env vars; `.env` locally, gitignored) and fails loudly without them, so a broken key never ships a blog with the RequestDesk posts silently missing. A slug used by both sources also fails the build.
 
+### Best used AI terms
+
+`/best-used-ai-terms/` lists the readable (term and phrase) entries from RequestDesk's public feed `/api/public/content-terms?term_type=avoid`, the same feed as requestdesk.ai/over-used-ai-terms. `src/utils/terms.ts` reads it at build time with the same `BACKEND_URL` and `AGENT_API_KEY`. A failed fetch or an empty list fails the build.
+
 ### Featured images
 
 Every post has one. Images from 2026-11-05 on use a Wes Anderson look (symmetrical, pastel, staged), always include a Jack Russell, and never contain text.
