@@ -1,0 +1,87 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { getOverusedTerms, type Term } from '../utils/terms';
+
+const terms = await getOverusedTerms();
+const byCategory = new Map<string, Term[]>();
+for (const t of terms) {
+  byCategory.set(t.category, [...(byCategory.get(t.category) ?? []), t]);
+}
+const anchor = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const termSetSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${canonical.href}#terms`,
+  url: canonical.href,
+  name: 'Best used AI terms',
+  description: 'The words and phrases that make writing read as AI-generated, from the RequestDesk content terms database, where they are filed as over-used.',
+  hasDefinedTerm: terms.map((t) => ({
+    '@type': 'DefinedTerm',
+    name: t.term,
+    ...(t.description && { description: t.description }),
+    inDefinedTermSet: `${canonical.href}#terms`,
+  })),
+};
+---
+
+<BaseLayout
+  title="Best used AI terms"
+  description={`The ${terms.length} best used AI terms, the words and phrases that make writing sound like a machine wrote it. This website uses every one.`}
+  schema={termSetSchema}
+>
+  <PageHero
+    eyebrow="The word list"
+    title="Best used AI terms."
+    subtitle={`${terms.length} words and phrases that make any page sound like a machine wrote it. This website uses every one of them. If you want your writing to sound like a person wrote it, cross them out.`}
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="aw-prose">
+        <p>
+          The list comes from the RequestDesk content terms database, where these same words are filed
+          as <a href="https://requestdesk.ai/over-used-ai-terms/">over-used AI terms</a>. It updates every
+          time this site rebuilds. For how to put the words to work, see
+          <a href="/faq/">How to write bad AI content</a>.
+        </p>
+
+        <p class="mt-5">
+          {[...byCategory.keys()].map((c, i) => (
+            <>{i > 0 && ' · '}<a href={`#${anchor(c)}`}>{c}</a></>
+          ))}
+        </p>
+
+        {
+          [...byCategory.entries()].map(([category, list]) => (
+            <>
+              <h2 class="title is-3 mt-6" id={anchor(category)}>
+                {category} <span class="has-text-grey is-size-6">({list.length})</span>
+              </h2>
+              <dl>
+                {list.map((t) => (
+                  <>
+                    <dt><strong>{t.term}</strong></dt>
+                    {t.description && <dd class="mb-3">{t.description}</dd>}
+                  </>
+                ))}
+              </dl>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Want writing without these words?"
+    text="That is the control group."
+    ctaLabel="Go here"
+    ctaHref={site.humanUrl}
+  />
+</BaseLayout>
