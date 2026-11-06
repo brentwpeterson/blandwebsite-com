@@ -16,6 +16,13 @@ Posts come from two places, merged newest first by `src/utils/posts.ts`:
 
 Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website" Astro site record, which rebuilds the site. The build needs `AGENT_API_KEY` and `BACKEND_URL` (Amplify branch env vars; `.env` locally, gitignored) and fails loudly without them, so a broken key never ships a blog with the RequestDesk posts silently missing. A slug used by both sources also fails the build.
 
+### Featured images
+
+Every post has one. Images from 2026-11-05 on use a Wes Anderson look (symmetrical, pastel, staged), always include a Jack Russell, and never contain text.
+
+- Markdown post: put the file at `public/blog/<slug>.jpg` and set `image` and `imageAlt` in frontmatter.
+- RequestDesk post: put the file at `public/blog/<slug>.jpg` too, not in the RequestDesk S3 upload. The `cb-content-storage` bucket archives objects to Glacier after 90 days, and the image URL then returns 403. Then `PATCH /api/astro-proxy/blog-posts/<postId>` with `featured_image: "/blog/<slug>.jpg"` and `featured_image_alt`. The path takes `postId` (`post-xxxxxxxx-<timestamp>`), not the Mongo `id`; a Mongo `id` returns 404. Push the image so the build includes it.
+
 ## Daily AI posts
 
 `.claude/local/bland-autopost.py` (CB-Workspace) runs on the Mac Mini every day at 07:00 (launchd `com.brent.bland-autopost`, installed with `schedule-task.sh --on mini`). It rotates Claude (`claude -p`), ChatGPT (`codex exec`, must be signed in with ChatGPT, never an API key) and Gemini (`agy`), picks the top unused Google Search Console query that fits the theme "Humans writing content is dead", publishes through the RequestDesk agent above with a "Written by" byline, and fires the Amplify webhook. No human edit, no voice gate. A failure posts nothing, raises a notification, and opens the `bland-autopost-failed` fix row. The public explanation is `/experiment/`.
