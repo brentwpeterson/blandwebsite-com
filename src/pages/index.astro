@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import CtaBand from '../components/CtaBand.astro';
+import HypeSections from '../components/HypeSections.astro';
+import HypeTyper from '../components/HypeTyper.astro';
 import LatestPosts from '../components/LatestPosts.astro';
 import PageHero from '../components/PageHero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
@@ -22,20 +24,15 @@ const organizationSchema = {
 
 const featuredServices = services.slice(0, 3);
 
-const stats = [
-  { value: '0', label: 'Clients served' },
-  { value: '24/7', label: 'Synergy' },
-  { value: '100%', label: 'Written by AI' },
-  { value: '6', label: 'Jack Russell photos' },
-];
 ---
 
 <BaseLayout title={site.name} description={site.description} schema={organizationSchema}>
   <PageHero
     eyebrow="Innovation · Synergy · Solutions"
-    title="Welcome to our website."
+    title="Solutions. Powered by AI."
     subtitle="We are passionate about delivering innovative solutions in today's fast-paced digital landscape. We built this site with a free template and an AI that has read every About Us page on the internet. Nothing here will surprise you. That is the product."
   >
+    <HypeTyper />
     <div class="buttons mt-5">
       <a class="button is-primary is-medium" href="/contact/">Get Started</a>
       <a class="button is-medium is-light is-outlined" href="/services/">Learn More</a>
@@ -53,20 +50,7 @@ const stats = [
     </Fragment>
   </PageHero>
 
-  <section class="section aw-section" aria-label="Company statistics">
-    <div class="container">
-      <div class="columns has-text-centered">
-        {
-          stats.map((stat) => (
-            <div class="column">
-              <span class="aw-stat-number">{stat.value}</span>
-              <span class="aw-stat-label">{stat.label}</span>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <HypeSections />
 
   <section class="section aw-section aw-section-alt">
     <div class="container">

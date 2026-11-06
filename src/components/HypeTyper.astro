@@ -1,0 +1,108 @@
+---
+/**
+ * Hero add-on: the shimmering "Now with AI" badge and a headline word that
+ * types itself, deletes itself, and types the next buzzword, forever.
+ * With reduced motion the first word just sits there, which is also on brand.
+ */
+const words = [
+  'AI-powered',
+  'next-generation',
+  'enterprise-grade',
+  'blockchain-ready',
+  'synergistic',
+  'best-in-class',
+  'revolutionary',
+  'cloud-native',
+  'hyper-personalized',
+];
+---
+
+<div class="hype-hero">
+  <span class="hype-badge">✨ Now with AI <span class="hype-badge-new">NEW</span></span>
+  <p class="hype-typer" aria-label={`Welcome to our ${words[0]} website.`}>
+    Welcome to our <span class="hype-gradient" data-hype-typer={JSON.stringify(words)}>{words[0]}</span><span class="hype-caret" aria-hidden="true">|</span> website.
+  </p>
+</div>
+
+<style>
+  .hype-hero {
+    margin: 0 0 1.25rem;
+  }
+  .hype-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--aw-border);
+    background: linear-gradient(110deg, var(--aw-accent-soft) 40%, rgba(255, 255, 255, 0.25) 50%, var(--aw-accent-soft) 60%);
+    background-size: 250% 100%;
+    animation: hype-shimmer 2.8s linear infinite;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .hype-badge-new {
+    background: var(--aw-accent);
+    color: var(--aw-on-accent);
+    border-radius: 999px;
+    padding: 0 0.45rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+  .hype-typer {
+    margin-top: 1rem;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 700;
+  }
+  .hype-gradient {
+    background: linear-gradient(90deg, #ff6b35, #ff3d9a, #7c5cff, #2fd2ff, #ff6b35);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: hype-flow 6s linear infinite;
+  }
+  .hype-caret {
+    animation: hype-blink 1s step-end infinite;
+    color: var(--aw-accent);
+  }
+  @keyframes hype-shimmer {
+    to { background-position: -150% 0; }
+  }
+  @keyframes hype-flow {
+    to { background-position: 300% 0; }
+  }
+  @keyframes hype-blink {
+    50% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hype-badge, .hype-gradient, .hype-caret { animation: none; }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-hype-typer]').forEach((el) => {
+    if (reduce) return;
+    const words: string[] = JSON.parse(el.dataset.hypeTyper ?? '[]');
+    let w = 0;
+    let i = words[0].length;
+    let deleting = true;
+    const tick = () => {
+      const word = words[w];
+      i += deleting ? -1 : 1;
+      el.textContent = word.slice(0, i);
+      let wait = deleting ? 45 : 90;
+      if (!deleting && i === word.length) {
+        deleting = true;
+        wait = 1800;
+      } else if (deleting && i === 0) {
+        deleting = false;
+        w = (w + 1) % words.length;
+        wait = 300;
+      }
+      setTimeout(tick, wait);
+    };
+    setTimeout(tick, 1800);
+  });
+</script>

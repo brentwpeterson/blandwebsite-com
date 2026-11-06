@@ -1,0 +1,331 @@
+---
+/**
+ * Every animation, data point and number an AI-made homepage is legally
+ * required to have. Each section is a real, working version of the cliché:
+ * a logo marquee with no logos, stats that count up to nothing, live counters
+ * that measure nothing, skill bars past 100%, and a chart with no units.
+ * Everything settles to its final value under prefers-reduced-motion.
+ */
+const logos = [
+  'Company Name',
+  'Your Logo Here',
+  'Placeholder Inc.',
+  'Enterprise Solutions LLC',
+  'Startup.ai',
+  'Synergy Partners',
+  'Logo Logo',
+  'Global Holdings Group',
+  'Stealth Mode Co.',
+  'Series A Labs',
+];
+
+const stats = [
+  { target: 10, suffix: 'x', label: 'Faster than something' },
+  { target: 99.99, decimals: 2, suffix: '%', label: 'Uptime*' },
+  { target: 1000000, suffix: '+', label: 'Words generated' },
+  { target: 247, suffix: '%', label: 'ROI**' },
+  { target: 4.9, decimals: 1, suffix: '/5', label: 'Average rating (1 review)' },
+  { target: 0, label: 'Humans involved' },
+  { target: 3, suffix: 's', label: 'Time to first synergy' },
+  { target: 12, prefix: '#', label: 'Ranked by us, for us' },
+];
+
+const tickers = [
+  { label: 'Words generated since you arrived', rate: 37 },
+  { label: 'AI agents deployed', rate: 2.4 },
+  { label: 'Synergies leveraged', rate: 11 },
+  { label: 'Paradigms shifted', rate: 0.6 },
+];
+
+const bars = [
+  { label: 'Innovation', value: 100 },
+  { label: 'Synergy', value: 110 },
+  { label: 'Disruption', value: 87 },
+  { label: 'Thought leadership', value: 64 },
+  { label: 'Measurable results', value: 3 },
+];
+
+// Up and to the right, as required. The y values mean nothing.
+const points = [8, 14, 12, 22, 30, 28, 41, 55, 52, 70, 86, 97];
+const chartW = 600;
+const chartH = 240;
+const path = points
+  .map((p, i) => `${i === 0 ? 'M' : 'L'} ${(i / (points.length - 1)) * chartW} ${chartH - (p / 100) * chartH}`)
+  .join(' ');
+---
+
+<section class="section aw-section hype-marquee-section" aria-label="Trusted by">
+  <div class="container has-text-centered">
+    <p class="aw-eyebrow mb-4">Trusted by forward-thinking teams at</p>
+  </div>
+  <div class="hype-marquee">
+    <div class="hype-marquee-track">
+      {[...logos, ...logos].map((l, i) => <span class="hype-logo" aria-hidden={i >= logos.length ? 'true' : undefined}>{l}</span>)}
+    </div>
+  </div>
+</section>
+
+<section class="section aw-section aw-section-alt hype-reveal" aria-label="Company statistics">
+  <div class="container">
+    <div class="aw-section-head">
+      <p class="aw-eyebrow mb-2">By the numbers</p>
+      <h2 class="title is-2">Numbers that speak for themselves</h2>
+      <p class="subtitle is-6">They do not say much.</p>
+    </div>
+    <div class="columns is-multiline has-text-centered">
+      {
+        stats.map((s) => (
+          <div class="column is-3-desktop is-6-tablet">
+            <div class="box aw-card hype-stat">
+              <span
+                class="aw-stat-number"
+                data-hype-count={s.target}
+                data-decimals={s.decimals ?? 0}
+                data-prefix={s.prefix ?? ''}
+                data-suffix={s.suffix ?? ''}
+              >
+                {(s.prefix ?? '') + s.target.toLocaleString('en-US', { minimumFractionDigits: s.decimals ?? 0, maximumFractionDigits: s.decimals ?? 0 }) + (s.suffix ?? '')}
+              </span>
+              <span class="aw-stat-label">{s.label}</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <p class="aw-form-note has-text-centered mt-4">
+      * Uptime measured while the site was up. ** Return on an investment nobody made.
+    </p>
+  </div>
+</section>
+
+<section class="section aw-section hype-reveal" aria-label="Live metrics">
+  <div class="container">
+    <div class="aw-section-head">
+      <p class="aw-eyebrow mb-2"><span class="hype-live-dot" aria-hidden="true"></span> Live</p>
+      <h2 class="title is-2">Real-time AI activity</h2>
+      <p class="subtitle is-6">These numbers go up while you read. That is all they do.</p>
+    </div>
+    <div class="columns is-multiline has-text-centered">
+      {
+        tickers.map((t) => (
+          <div class="column is-3-desktop is-6-tablet">
+            <span class="aw-stat-number hype-ticker" data-hype-rate={t.rate}>0</span>
+            <span class="aw-stat-label">{t.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section aw-section aw-section-alt hype-reveal" aria-label="Capabilities">
+  <div class="container">
+    <div class="columns is-vcentered is-variable is-8">
+      <div class="column is-5">
+        <p class="aw-eyebrow mb-2">Core competencies</p>
+        <h2 class="title is-3 mb-5">We are good at everything</h2>
+        {
+          bars.map((b) => (
+            <div class="hype-bar mb-4">
+              <div class="hype-bar-head">
+                <span>{b.label}</span>
+                <span>{b.value}%</span>
+              </div>
+              <div class="hype-bar-track">
+                <div class="hype-bar-fill" style={`--w: ${b.value}%`}></div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class="column is-7">
+        <p class="aw-eyebrow mb-2">Growth</p>
+        <h2 class="title is-3 mb-5">Up and to the right</h2>
+        <svg class="hype-chart" viewBox={`0 0 ${chartW} ${chartH}`} role="img" aria-label="A line chart going up and to the right. The axis has no units.">
+          {[0.25, 0.5, 0.75].map((f) => <line x1="0" x2={chartW} y1={chartH * f} y2={chartH * f} class="hype-grid" />)}
+          <path d={`${path} L ${chartW} ${chartH} L 0 ${chartH} Z`} class="hype-area" />
+          <path d={path} class="hype-line" pathLength="1" />
+        </svg>
+        <div class="hype-chart-axis">
+          <span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span>
+        </div>
+        <p class="aw-form-note mt-2">Growth of something, in units we did not record.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section aw-section hype-reveal" aria-label="Limited-time offer">
+  <div class="container">
+    <div class="aw-cta has-text-centered hype-offer">
+      <p class="aw-eyebrow mb-3">Limited-time offer</p>
+      <h2 class="title is-2 mb-3">Act now. This offer ends in</h2>
+      <p class="hype-countdown" data-hype-countdown>--:--:--</p>
+      <p class="aw-form-note mt-3">The timer resets every night at midnight. The offer is also not real.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hype-marquee-section { padding-bottom: 1.5rem; }
+  .hype-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .hype-marquee-track {
+    display: flex;
+    gap: 3.5rem;
+    width: max-content;
+    animation: hype-scroll 40s linear infinite;
+  }
+  .hype-logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--aw-muted);
+    white-space: nowrap;
+    opacity: 0.8;
+  }
+  .hype-stat { height: 100%; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+  .hype-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 1px var(--aw-accent), 0 12px 40px var(--aw-accent-soft);
+  }
+  .hype-live-dot {
+    display: inline-block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-right: 0.35rem;
+    animation: hype-pulse 1.4s ease-in-out infinite;
+  }
+  .hype-ticker { font-variant-numeric: tabular-nums; }
+  .hype-bar-head { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.35rem; }
+  .hype-bar-track {
+    height: 0.6rem;
+    border-radius: 999px;
+    background: var(--aw-border);
+    overflow: visible;
+  }
+  /* Final state is the default, so the page reads correctly with no JavaScript.
+     The script marks off-screen sections .hype-pending, and seeing one animates it in. */
+  .hype-bar-fill {
+    height: 100%;
+    width: var(--w);
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff6b35, #ff3d9a, #7c5cff);
+    transition: width 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .hype-pending .hype-bar-fill { width: 0; }
+  .hype-chart { width: 100%; height: auto; overflow: visible; }
+  .hype-grid { stroke: var(--aw-border); stroke-width: 1; }
+  .hype-area { fill: var(--aw-accent-soft); transition: opacity 1s ease 1.2s; }
+  .hype-line {
+    fill: none;
+    stroke: var(--aw-accent);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 2s ease;
+  }
+  .hype-pending .hype-line { stroke-dashoffset: 1; }
+  .hype-pending .hype-area { opacity: 0; }
+  .hype-chart-axis { display: flex; justify-content: space-between; color: var(--aw-muted); font-size: 0.85rem; }
+  .hype-countdown {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--aw-accent);
+  }
+  .hype-reveal { transition: opacity 0.8s ease, transform 0.8s ease; }
+  .hype-reveal.hype-pending { opacity: 0; transform: translateY(28px); }
+  @keyframes hype-scroll { to { transform: translateX(-50%); } }
+  @keyframes hype-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
+    50% { box-shadow: 0 0 0 0.45rem rgba(34, 197, 94, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hype-marquee-track, .hype-live-dot { animation: none; }
+    .hype-marquee-track { flex-wrap: wrap; justify-content: center; width: auto; }
+    .hype-reveal, .hype-bar-fill, .hype-line, .hype-area { transition: none; }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const format = (n: number, decimals: number) =>
+    n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+  function countUp(el: HTMLElement) {
+    const target = Number(el.dataset.hypeCount);
+    const decimals = Number(el.dataset.decimals ?? 0);
+    const prefix = el.dataset.prefix ?? '';
+    const suffix = el.dataset.suffix ?? '';
+    const start = performance.now();
+    const duration = 1800;
+    const step = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = prefix + format(target * eased, decimals) + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  // Scroll reveal, count-up, bars and chart start when a section is seen.
+  // Only sections below the fold are hidden first; anything already on screen
+  // stays put, and with reduced motion nothing is hidden at all.
+  const sections = document.querySelectorAll<HTMLElement>('.hype-reveal');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const section = e.target as HTMLElement;
+          // Force a style flush so the transition runs from the pending state.
+          void section.offsetWidth;
+          section.classList.remove('hype-pending');
+          section.querySelectorAll<HTMLElement>('[data-hype-count]').forEach(countUp);
+          io.unobserve(section);
+        });
+      },
+      { threshold: 0.2 },
+    );
+    sections.forEach((s) => {
+      if (s.getBoundingClientRect().top > window.innerHeight) s.classList.add('hype-pending');
+      io.observe(s);
+    });
+  }
+
+  // Live counters: they go up. That is the feature.
+  const tickers = document.querySelectorAll<HTMLElement>('[data-hype-rate]');
+  const t0 = performance.now();
+  const tick = () => {
+    const secs = (performance.now() - t0) / 1000;
+    tickers.forEach((el) => {
+      el.textContent = format(Math.floor(secs * Number(el.dataset.hypeRate)), 0);
+    });
+  };
+  tick();
+  setInterval(tick, reduce ? 1000 : 100);
+
+  // Countdown to the next local midnight, when the same offer starts again.
+  const countdown = document.querySelector<HTMLElement>('[data-hype-countdown]');
+  if (countdown) {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const render = () => {
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      const s = Math.floor((midnight.getTime() - now.getTime()) / 1000);
+      countdown.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
+    };
+    render();
+    setInterval(render, 1000);
+  }
+</script>
