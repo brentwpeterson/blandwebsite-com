@@ -1,0 +1,57 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { faqIntro, faqs } from '../data/faq';
+import { site } from '../data/site';
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// Built from the same list the page renders, so the schema matches the visible text.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${canonical.href}#faq`,
+  url: canonical.href,
+  name: 'How to write bad AI content',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<BaseLayout
+  title="How to write bad AI content"
+  description="Frequently asked questions about writing bad AI content: picking a topic nobody asked about, the words that give it away, and why nobody should edit it."
+  schema={faqSchema}
+>
+  <PageHero
+    eyebrow="FAQ"
+    title="How to write bad AI content."
+    subtitle={faqIntro}
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="aw-prose" id="faq">
+        {
+          faqs.map((f, i) => (
+            <>
+              <h2 class:list={['title is-4', { 'mt-6': i > 0 }]}>{f.question}</h2>
+              <p>{f.answer}</p>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Want content that is not bad?"
+    text="That is the control group."
+    ctaLabel="Go here"
+    ctaHref={site.humanUrl}
+  />
+</BaseLayout>
