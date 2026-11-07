@@ -113,6 +113,12 @@ async function fetchRequestDeskPosts(): Promise<RdPost[]> {
   return all.filter((p) => p.slug);
 }
 
+/** The AI and model from a RequestDesk post's "Written by <AI> (<model>)" byline. */
+function bylineAuthor(html: string): Post['writtenBy'] {
+  const m = /class="aw-ai-byline"[^>]*>Written by ([^<(]+?)\s*\(([^)<]+)\)/.exec(html);
+  return m ? { llm: decodeEntities(m[1].trim()), model: decodeEntities(m[2].trim()) } : undefined;
+}
+
 function fromRequestDesk(p: RdPost): Post {
   const { body, qa } = splitQa(p.content ?? '');
   const text = stripHtml(body);
@@ -130,6 +136,7 @@ function fromRequestDesk(p: RdPost): Post {
     featuredImage: p.featured_image || undefined,
     featuredImageAlt: p.featured_image_alt || p.title,
     qa,
+    writtenBy: bylineAuthor(body),
   };
 }
 
@@ -166,8 +173,9 @@ export function getAllPosts(): Promise<Post[]> {
       seen.add(p.slug);
       // Every post ships with Q&A and FAQPage (Brent, 2026-11-05 and 2026-11-06).
       // Every post is signed with the AI and the exact model that wrote it (Brent, 2026-11-06).
-      if (p.source === 'requestdesk' && !/class="aw-ai-byline"[^>]*>Written by [^<(]+\([^)<]+\)/.test(p.html ?? '')) {
-        throw new Error(`Blog post "${p.slug}" (requestdesk) has no "Written by <AI> (<model>)" byline.`);
+      // The same AI and model are the BlogPosting author in the structured data.
+      if (!p.writtenBy) {
+        throw new Error(`Blog post "${p.slug}" (${p.source}) has no "Written by <AI> (<model>)" byline.`);
       }
       if (p.qa.length === 0) {
         throw new Error(

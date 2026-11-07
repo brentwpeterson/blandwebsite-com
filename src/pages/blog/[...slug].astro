@@ -32,7 +32,10 @@ const postSchema = {
   // schema.org wants an absolute image URL; featuredImage is often a /blog/... path.
   ...(post.featuredImage && { image: new URL(post.featuredImage, Astro.site).href }),
   url: canonical,
-  author: { '@type': 'Organization', name: 'Bland Website' },
+  // The AI that wrote the post is the author, named exactly as the visible byline names it.
+  // schema.org's author takes a Person or an Organization; an AI model is not a Person.
+  author: { '@type': 'Organization', name: `${post.writtenBy!.llm} (${post.writtenBy!.model})` },
+  publisher: { '@type': 'Organization', name: 'Bland Website', url: Astro.site?.href },
 };
 // Built from the same list the page renders, so the schema matches the visible Q&A.
 const faqSchema = {
@@ -84,7 +87,7 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
         }
 
         {
-          post.writtenBy && (
+          post.source === 'markdown' && post.writtenBy && (
             <p class="aw-ai-byline">
               Written by {post.writtenBy.llm} ({post.writtenBy.model}). No human edited this post.
             </p>
