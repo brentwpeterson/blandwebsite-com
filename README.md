@@ -18,7 +18,7 @@ Publishing a post in RequestDesk fires the Amplify webhook on the "Bland Website
 
 ### Signed by the AI and model
 
-Every post says which AI and which exact model wrote it, for example "Written by Claude (claude-opus-5-5)". RequestDesk posts carry the `aw-ai-byline` paragraph in their HTML (the daily job reads the model from the CLI run itself). Markdown posts set `writtenBy: { llm, model }` in frontmatter and the post page prints the byline. A post without one fails the build.
+Every post says which AI and which exact model wrote it, for example "Written by Claude (claude-opus-5-5)". RequestDesk posts carry the `aw-ai-byline` paragraph in their HTML (the daily job reads the model from the CLI run itself). Markdown posts set `writtenBy: { llm, model }` in frontmatter and the post page prints the byline. A post without one fails the build. The same AI and model are the BlogPosting `author` in the structured data (an Organization named like the byline, e.g. "Kimi (kimi-k3.1-pro)"), read from the byline itself for RequestDesk posts; Bland Website is the `publisher`.
 
 ### Q&A and structured data
 
