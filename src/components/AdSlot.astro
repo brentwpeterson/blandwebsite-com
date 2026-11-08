@@ -1,0 +1,110 @@
+---
+/**
+ * The ad placeholder. BaseLayout puts one on every page, between the page and the
+ * footer. Every ad from src/data/ads.ts is rendered hidden; a script shows one at
+ * random on each page load (and on each client-side navigation, since the site uses
+ * Astro's ClientRouter). The slot keeps its height while empty so nothing jumps.
+ * An empty ads list fails the build: a slot with nothing to show is a broken page.
+ */
+import { ads, adUtm } from '../data/ads';
+
+if (ads.length === 0) {
+  throw new Error('src/data/ads.ts has no ads. AdSlot is on every page and needs at least one.');
+}
+
+const withUtm = (href: string, id: string) => {
+  const u = new URL(href);
+  u.searchParams.set('utm_source', adUtm.source);
+  u.searchParams.set('utm_medium', adUtm.medium);
+  u.searchParams.set('utm_campaign', adUtm.campaign);
+  u.searchParams.set('utm_content', id);
+  return u.href;
+};
+---
+
+<aside class="aw-ad-section" aria-label="Advertisement">
+  <div class="container">
+    <div class="aw-ad-slot" data-ad-slot>
+      <p class="aw-ad-label">Ad · from the humans at Content Cucumber</p>
+      {
+        ads.map((ad) => (
+          <a class="aw-ad" href={withUtm(ad.href, ad.id)} data-ad-id={ad.id} hidden>
+            <span class="aw-ad-headline">{ad.headline}</span>
+            <span class="aw-ad-body">{ad.body}</span>
+            <span class="button is-primary aw-ad-cta">{ad.cta}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</aside>
+
+<script>
+  function showOneAd() {
+    for (const slot of document.querySelectorAll<HTMLElement>('[data-ad-slot]')) {
+      const choices = slot.querySelectorAll<HTMLAnchorElement>('a[data-ad-id]');
+      if (choices.length === 0) continue;
+      choices.forEach((a) => (a.hidden = true));
+      const pick = choices[Math.floor(Math.random() * choices.length)];
+      pick.hidden = false;
+      const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+      gtag?.('event', 'ad_view', { ad_id: pick.dataset.adId, page_path: location.pathname });
+      pick.onclick = () => gtag?.('event', 'ad_click', { ad_id: pick.dataset.adId, page_path: location.pathname });
+    }
+  }
+  document.addEventListener('astro:page-load', showOneAd);
+</script>
+
+<style>
+  .aw-ad-section {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+  .aw-ad-slot {
+    min-height: 9.5rem;
+    border: 1px dashed var(--aw-border);
+    border-radius: 12px;
+    background-color: var(--aw-ink-raised);
+    padding: 1rem 1.25rem 1.25rem;
+  }
+  .aw-ad-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 0.75rem;
+  }
+  .aw-ad {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'headline cta' 'body cta';
+    gap: 0.25rem 1.5rem;
+    align-items: center;
+    color: var(--aw-text);
+    text-decoration: none;
+  }
+  .aw-ad[hidden] {
+    display: none;
+  }
+  .aw-ad-headline {
+    grid-area: headline;
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+  .aw-ad-body {
+    grid-area: body;
+    opacity: 0.85;
+  }
+  .aw-ad-cta {
+    grid-area: cta;
+  }
+  @media (max-width: 640px) {
+    .aw-ad {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'headline' 'body' 'cta';
+    }
+    .aw-ad-cta {
+      justify-self: start;
+      margin-top: 0.75rem;
+    }
+  }
+</style>

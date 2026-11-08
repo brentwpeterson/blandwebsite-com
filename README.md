@@ -6,6 +6,7 @@ A completely bland, AI-made company website. Every word and every Jack Russell i
 - Content lives in `src/data/*.ts` and `src/content/blog/`. Images in `src/assets/images/`.
 - Hosting: AWS Amplify, auto-deploys on push to `main`. Node 24 via `amplify.yml`.
 - Local: `npm run dev -- --port 3013` (or `/run-local bland`).
+- House ads: `src/components/AdSlot.astro` sits in `BaseLayout`, so every page has one ad slot between the page and the footer. It shows one ad from `src/data/ads.ts`, picked at random on each load. Links carry `utm_source=blandwebsite&utm_medium=house-ad&utm_campaign=cc-for-humans&utm_content=<ad id>`, and GA4 gets `ad_view` and `ad_click` events with the ad id. An empty ads list fails the build. Every ad claim comes from contentcucumber.com.
 - Address and phone are Content Cucumber's real ones, the same as its footer (`src/data/site.ts`, shown in the footer and on `/contact/`, and in the homepage Organization schema). Calls reach the Content Cucumber team. Change them in `site.ts` if Content Cucumber's change.
 
 ## Blog
