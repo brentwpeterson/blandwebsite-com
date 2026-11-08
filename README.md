@@ -6,6 +6,7 @@ A completely bland, AI-made company website. Every word and every Jack Russell i
 - Content lives in `src/data/*.ts` and `src/content/blog/`. Images in `src/assets/images/`.
 - Hosting: AWS Amplify, auto-deploys on push to `main`. Node 24 via `amplify.yml`.
 - Local: `npm run dev -- --port 3013` (or `/run-local bland`).
+- Address and phone are Content Cucumber's real ones, the same as its footer (`src/data/site.ts`, shown in the footer and on `/contact/`, and in the homepage Organization schema). Calls reach the Content Cucumber team. Change them in `site.ts` if Content Cucumber's change.
 
 ## Blog
 

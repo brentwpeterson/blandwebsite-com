@@ -6,9 +6,17 @@ export const site = {
   tagline: 'Innovative solutions for a fast-paced digital landscape. Whatever that means.',
   description:
     'Bland Website delivers innovative, best-in-class solutions to forward-thinking stakeholders. We are not sure what that means either.',
-  // 555-0100 is a reserved fictional number. It will not ring.
-  phone: '+1 (555) 555-0100',
-  address: '404 Nowhere Lane · Anytown, USA',
+  // Content Cucumber's real address and phone, the same as its footer (Brent, 2026-11-08).
+  // Calls reach the humans at Content Cucumber.
+  phone: '+1-808-210-3611',
+  address: '1400 Van Buren St. NE, Suite 200 · Minneapolis, MN 55413',
+  postalAddress: {
+    streetAddress: '1400 Van Buren St. NE, Suite 200',
+    addressLocality: 'Minneapolis',
+    addressRegion: 'MN',
+    postalCode: '55413',
+    addressCountry: 'US',
+  },
   url: 'https://blandwebsite.com',
   humanUrl: 'https://contentcucumber.com/',
   // Sponsor line at the top of every post. The page is RequestDesk's headless
