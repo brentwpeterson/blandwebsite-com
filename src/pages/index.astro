@@ -14,14 +14,29 @@ import { testimonials } from '../data/testimonials';
 import ceoDesk from '../assets/images/ceo-desk.png';
 import sarah from '../assets/images/sarah-j-headshot.png';
 
+// WebSite + Organization, both named "Bland Website": Google reads the WebSite
+// name for the site name it shows in results, and the target query is the name.
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  telephone: site.phone,
-  address: { '@type': 'PostalAddress', ...site.postalAddress },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      name: site.name,
+      alternateName: ['blandwebsite.com', 'The Bland Website'],
+      url: `${site.url}/`,
+      publisher: { '@id': `${site.url}/#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${site.url}/#organization`,
+      name: site.name,
+      description: site.description,
+      url: site.url,
+      telephone: site.phone,
+      address: { '@type': 'PostalAddress', ...site.postalAddress },
+    },
+  ],
 };
 
 const featuredServices = services.slice(0, 3);
