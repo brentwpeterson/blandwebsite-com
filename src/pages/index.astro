@@ -11,7 +11,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { services } from '../data/services';
 import { site } from '../data/site';
 import { testimonials } from '../data/testimonials';
-import ceoDesk from '../assets/images/ceo-desk.png';
+import chairmanPainting from '../assets/images/chairman-oil-painting.png';
 import sarah from '../assets/images/sarah-j-headshot.png';
 
 // WebSite + Organization, both named "Bland Website": Google reads the WebSite
@@ -58,8 +58,8 @@ const featuredServices = services.slice(0, 3);
     <Fragment slot="aside">
       <Image
         class="aw-photo"
-        src={ceoDesk}
-        alt="A Jack Russell Terrier in a navy suit and tie stands on an office chair at a desk, ready to lead."
+        src={chairmanPainting}
+        alt="An oil painting of Marlin Blando, Chairman of Bland Website, in a gray suit and beige tie, smoking a cigar at a mahogany desk with a closed laptop, an empty in-tray and a glass of water."
         widths={[480, 960]}
         sizes="(max-width: 768px) 100vw, 480px"
         loading="eager"
