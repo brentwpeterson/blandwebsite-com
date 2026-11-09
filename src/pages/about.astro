@@ -3,13 +3,13 @@ import { Image } from 'astro:assets';
 import CtaBand from '../components/CtaBand.astro';
 import PageHero from '../components/PageHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { team, values } from '../data/team';
+import { chairman, team, values } from '../data/team';
 import teamPhoto from '../assets/images/team-high-five.png';
 ---
 
 <BaseLayout
   title="About"
-  description="Learn about the team behind Bland Website and the values we picked from a dropdown."
+  description="Meet Marlin Blando, Chairman of Bland Website, the team behind the site and the values we picked from a dropdown."
 >
   <PageHero
     eyebrow="About us"
@@ -51,7 +51,34 @@ import teamPhoto from '../assets/images/team-high-five.png';
     </div>
   </section>
 
-  <section class="section aw-section aw-section-alt">
+  <section class="section aw-section aw-section-alt" id="chairman">
+    <div class="container">
+      <div class="aw-section-head">
+        <p class="aw-eyebrow mb-2">Leadership</p>
+        <h2 class="title is-2">A letter from our Chairman</h2>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="box aw-card">
+            <div class="content">
+              {chairman.letter.map((paragraph) => <p>{paragraph}</p>)}
+              <p class="mb-4">{chairman.signOff}</p>
+            </div>
+            <div class="is-flex is-align-items-center">
+              <span class="aw-avatar mr-4" aria-hidden="true">{chairman.initials}</span>
+              <div>
+                <p class="title is-5 mb-1">{chairman.name}</p>
+                <p class="aw-form-note">{chairman.role}, Bland Website</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
     <div class="container">
       <div class="aw-section-head">
         <p class="aw-eyebrow mb-2">What guides us</p>
@@ -74,7 +101,7 @@ import teamPhoto from '../assets/images/team-high-five.png';
     </div>
   </section>
 
-  <section class="section aw-section">
+  <section class="section aw-section aw-section-alt">
     <div class="container">
       <div class="aw-section-head">
         <p class="aw-eyebrow mb-2">The team</p>
