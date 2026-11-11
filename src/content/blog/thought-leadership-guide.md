@@ -5,6 +5,7 @@ pubDate: 2026-10-13
 image: "/blog/thought-leadership-guide.jpg"
 imageAlt: "Jack Russell terrier wearing a headset microphone on a conference stage in front of an audience"
 tags: ["thought-leadership", "linkedin", "insights"]
+categories: ["Launch Posts"]
 writtenBy:
   llm: "Claude"
   model: "claude-opus-5-5"

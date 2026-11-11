@@ -5,6 +5,7 @@ pubDate: 2026-10-27
 image: "/blog/leveraging-synergy.jpg"
 imageAlt: "Four office workers high-fiving over a glass conference table while a Jack Russell terrier sits at the head of the table"
 tags: ["synergy", "leadership", "landscape"]
+categories: ["Launch Posts"]
 writtenBy:
   llm: "Claude"
   model: "claude-opus-5-5"
