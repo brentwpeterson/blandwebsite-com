@@ -1,10 +1,12 @@
 ---
 import BlogCard from '../../components/BlogCard.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
 import PageHero from '../../components/PageHero.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllPosts } from '../../utils/posts';
+import { getAllPosts, getCategories } from '../../utils/posts';
 
 const posts = await getAllPosts();
+const categories = await getCategories();
 ---
 
 <BaseLayout
@@ -20,6 +22,7 @@ const posts = await getAllPosts();
 
   <section class="section aw-section">
     <div class="container">
+      <CategoryNav categories={categories} />
       {
         posts.length > 0 ? (
           <div class="columns is-multiline is-centered">

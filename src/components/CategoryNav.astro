@@ -1,0 +1,29 @@
+---
+import type { Category } from '../utils/posts';
+
+interface Props {
+  categories: Category[];
+  /** Slug of the category page being shown; omit on the blog index. */
+  current?: string;
+}
+
+const { categories, current } = Astro.props;
+---
+
+{
+  categories.length > 0 && (
+    <nav class="aw-categories mb-6" aria-label="Blog categories">
+      <a class:list={['aw-category', { 'is-current': !current }]} href="/blog/">
+        All posts
+      </a>
+      {categories.map((c) => (
+        <a
+          class:list={['aw-category', { 'is-current': current === c.slug }]}
+          href={`/blog/category/${c.slug}/`}
+        >
+          {c.name} ({c.posts.length})
+        </a>
+      ))}
+    </nav>
+  )
+}

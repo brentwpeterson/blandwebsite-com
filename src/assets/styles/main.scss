@@ -486,6 +486,30 @@ main {
   color: var(--aw-muted);
 }
 
+// Category links: on the blog index, the category pages and each post.
+.aw-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.aw-category {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--aw-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--aw-accent);
+  text-decoration: none;
+
+  &:hover,
+  &.is-current {
+    background: var(--aw-accent-soft);
+    color: var(--aw-accent);
+  }
+}
+
 // Prose styling for rendered blog posts.
 .aw-prose {
   max-width: 44rem;

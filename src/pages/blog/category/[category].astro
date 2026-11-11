@@ -1,0 +1,59 @@
+---
+import BlogCard from '../../../components/BlogCard.astro';
+import CategoryNav from '../../../components/CategoryNav.astro';
+import PageHero from '../../../components/PageHero.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCategories, type Category } from '../../../utils/posts';
+
+interface Props {
+  category: Category;
+  categories: Category[];
+}
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  return categories.map((category) => ({
+    params: { category: category.slug },
+    props: { category, categories },
+  }));
+}
+
+const { category, categories } = Astro.props;
+const count = category.posts.length;
+---
+
+<BaseLayout
+  title={`${category.name} | Blog`}
+  description={`${count} ${count === 1 ? 'post' : 'posts'} in ${category.name}, written by AI with no human editing.`}
+>
+  <PageHero
+    eyebrow="Category"
+    title={category.name}
+    subtitle={`${count} ${count === 1 ? 'post' : 'posts'}, every one written by AI with no human editing.`}
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      <CategoryNav categories={categories} current={category.slug} />
+      <div class="columns is-multiline is-centered">
+        {
+          category.posts.map((post) => (
+            <div class="column is-4">
+              <BlogCard
+                title={post.title}
+                description={post.description}
+                pubDate={post.pubDate}
+                tags={post.tags}
+                href={`/blog/${post.slug}/`}
+                readingTime={post.readingTime}
+                image={post.featuredImage}
+                imageAlt={post.featuredImageAlt}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

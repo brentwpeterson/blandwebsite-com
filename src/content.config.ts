@@ -17,6 +17,8 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    // Categories group posts on /blog/category/<slug>/. RequestDesk posts carry theirs in the API.
+    categories: z.array(z.string()).default([]),
     // Featured image under public/, e.g. /blog/<slug>.jpg. Every post has one (Brent, 2026-11-04).
     image: z.string(),
     imageAlt: z.string(),

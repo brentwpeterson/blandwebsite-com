@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/date';
-import { getAllPosts, type Post } from '../../utils/posts';
+import { categorySlug, getAllPosts, type Post } from '../../utils/posts';
 import { site } from '../../data/site';
 
 interface Props {
@@ -73,6 +73,18 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
           {' · '}
           {post.readingTime}
         </p>
+
+        {
+          post.categories.length > 0 && (
+            <p class="aw-categories mb-4">
+              {post.categories.map((c) => (
+                <a class="aw-category" href={`/blog/category/${categorySlug(c.trim())}/`}>
+                  {c.trim()}
+                </a>
+              ))}
+            </p>
+          )
+        }
 
         <h1 class="title is-1 mb-5">{post.title}</h1>
 

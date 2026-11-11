@@ -25,6 +25,8 @@ export interface Post {
   pubDate: Date;
   updatedDate?: Date;
   tags: string[];
+  /** Groups posts on /blog/category/<slug>/. A post with none is in no category. */
+  categories: string[];
   readingTime: string;
   source: 'markdown' | 'requestdesk';
   /** Markdown posts render through astro:content */
@@ -129,7 +131,8 @@ function fromRequestDesk(p: RdPost): Post {
     description,
     pubDate: new Date(p.published_at ?? Date.now()),
     updatedDate: p.updated_at ? new Date(p.updated_at) : undefined,
-    tags: p.tags?.length ? p.tags : (p.categories ?? []),
+    tags: p.tags ?? [],
+    categories: p.categories ?? [],
     readingTime: readingTime(text),
     source: 'requestdesk',
     html: body,
@@ -148,6 +151,7 @@ function fromMarkdown(entry: CollectionEntry<'blog'>): Post {
     pubDate: entry.data.pubDate,
     updatedDate: entry.data.updatedDate,
     tags: entry.data.tags,
+    categories: entry.data.categories,
     readingTime: readingTime(entry.body ?? ''),
     source: 'markdown',
     entry,
@@ -186,4 +190,48 @@ export function getAllPosts(): Promise<Post[]> {
     return posts.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
   })();
   return cache;
+}
+
+export interface Category {
+  name: string;
+  slug: string;
+  /** Newest first, same order as the blog index. */
+  posts: Post[];
+}
+
+/** "Model Comparisons" -> "model-comparisons". */
+export function categorySlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Every category that has at least one post, largest first. Two names that
+ * reduce to the same slug ("Model Comparisons" and "model comparisons") FAIL
+ * THE BUILD rather than one page silently swallowing the other.
+ */
+export async function getCategories(): Promise<Category[]> {
+  const bySlug = new Map<string, Category>();
+  for (const post of await getAllPosts()) {
+    for (const raw of post.categories) {
+      const name = raw.trim();
+      const slug = categorySlug(name);
+      if (!slug) {
+        throw new Error(`Blog post "${post.slug}" has a category with no usable slug: ${JSON.stringify(raw)}`);
+      }
+      const existing = bySlug.get(slug);
+      if (existing && existing.name !== name) {
+        throw new Error(
+          `Categories "${existing.name}" and "${name}" share the slug "${slug}" (post "${post.slug}"). Use one spelling.`,
+        );
+      }
+      const cat = existing ?? { name, slug, posts: [] };
+      if (!cat.posts.includes(post)) cat.posts.push(post);
+      bySlug.set(slug, cat);
+    }
+  }
+  return [...bySlug.values()].sort((a, b) => b.posts.length - a.posts.length || a.name.localeCompare(b.name));
 }
