@@ -34,7 +34,10 @@ const postSchema = {
   url: canonical,
   // The AI that wrote the post is the author, named exactly as the visible byline names it.
   // schema.org's author takes a Person or an Organization; an AI model is not a Person.
-  author: { '@type': 'Organization', name: `${post.writtenBy!.llm} (${post.writtenBy!.model})` },
+  // A showdown post has four authors; schema.org's author takes a list.
+  author: post.authors.length === 1
+    ? { '@type': 'Organization', name: `${post.authors[0].llm} (${post.authors[0].model})` }
+    : post.authors.map((a) => ({ '@type': 'Organization', name: `${a.llm} (${a.model})` })),
   publisher: { '@type': 'Organization', name: 'Bland Website', url: Astro.site?.href },
 };
 // Built from the same list the page renders, so the schema matches the visible Q&A.
@@ -99,9 +102,9 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
         }
 
         {
-          post.source === 'markdown' && post.writtenBy && (
+          post.source === 'markdown' && (
             <p class="aw-ai-byline">
-              Written by {post.writtenBy.llm} ({post.writtenBy.model}). No human edited this post.
+              Written by {post.authors[0].llm} ({post.authors[0].model}). No human edited this post.
             </p>
           )
         }

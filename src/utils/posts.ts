@@ -37,8 +37,17 @@ export interface Post {
   featuredImageAlt?: string;
   /** Shown under the post and marked up as FAQPage. Never empty: a post without one fails the build. */
   qa: QaPair[];
-  /** Markdown posts: the AI and exact model that wrote it. RequestDesk posts carry the byline in their HTML. */
-  writtenBy?: { llm: string; model: string };
+  /**
+   * Every AI and exact model that wrote the post: one for a normal post, four for a showdown.
+   * Markdown posts take it from frontmatter writtenBy; RequestDesk posts from their HTML byline.
+   * Never empty: a post without one fails the build.
+   */
+  authors: Author[];
+}
+
+export interface Author {
+  llm: string;
+  model: string;
 }
 
 interface RdPost {
@@ -115,10 +124,17 @@ async function fetchRequestDeskPosts(): Promise<RdPost[]> {
   return all.filter((p) => p.slug);
 }
 
-/** The AI and model from a RequestDesk post's "Written by <AI> (<model>)" byline. */
-function bylineAuthor(html: string): Post['writtenBy'] {
-  const m = /class="aw-ai-byline"[^>]*>Written by ([^<(]+?)\s*\(([^)<]+)\)/.exec(html);
-  return m ? { llm: decodeEntities(m[1].trim()), model: decodeEntities(m[2].trim()) } : undefined;
+/**
+ * Every AI and model in a RequestDesk post's byline: "Written by <AI> (<model>) on <date>", or for a
+ * showdown "Written by <AI> (<model>), <AI> (<model>) and <AI> (<model>) on <date>".
+ */
+function bylineAuthors(html: string): Author[] {
+  const m = /class="aw-ai-byline"[^>]*>Written by ([^<]*?) on [A-Z][a-z]+ \d/.exec(html);
+  if (!m) return [];
+  return [...m[1].matchAll(/(?:^|,\s*|\s+and\s+)([^,()]+?)\s*\(([^()]+)\)/g)].map((a) => ({
+    llm: decodeEntities(a[1].replace(/^and\s+/, '').trim()),
+    model: decodeEntities(a[2].trim()),
+  }));
 }
 
 function fromRequestDesk(p: RdPost): Post {
@@ -139,7 +155,7 @@ function fromRequestDesk(p: RdPost): Post {
     featuredImage: p.featured_image || undefined,
     featuredImageAlt: p.featured_image_alt || p.title,
     qa,
-    writtenBy: bylineAuthor(body),
+    authors: bylineAuthors(body),
   };
 }
 
@@ -158,7 +174,7 @@ function fromMarkdown(entry: CollectionEntry<'blog'>): Post {
     featuredImage: entry.data.image,
     featuredImageAlt: entry.data.imageAlt,
     qa: entry.data.qa,
-    writtenBy: entry.data.writtenBy,
+    authors: [entry.data.writtenBy],
   };
 }
 
@@ -178,7 +194,7 @@ export function getAllPosts(): Promise<Post[]> {
       // Every post ships with Q&A and FAQPage (Brent, 2026-11-05 and 2026-11-06).
       // Every post is signed with the AI and the exact model that wrote it (Brent, 2026-11-06).
       // The same AI and model are the BlogPosting author in the structured data.
-      if (!p.writtenBy) {
+      if (p.authors.length === 0) {
         throw new Error(`Blog post "${p.slug}" (${p.source}) has no "Written by <AI> (<model>)" byline.`);
       }
       if (p.qa.length === 0) {
