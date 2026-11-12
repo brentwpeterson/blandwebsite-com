@@ -24,7 +24,7 @@ export const team: TeamMember[] = [
   {
     name: 'The Jack Russell',
     role: 'Founder & Chief Executive',
-    bio: 'Appears in every photo on this site. Has never read a slide deck. Has excellent instincts about squirrels.',
+    bio: 'Appears in every photo. Has never read a slide deck. Has excellent instincts about squirrels.',
     initials: 'JR',
   },
   {

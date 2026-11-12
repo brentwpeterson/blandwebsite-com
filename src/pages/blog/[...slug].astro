@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import SponsorBanner from '../../components/SponsorBanner.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/date';
 import { categorySlug, getAllPosts, type Post } from '../../utils/posts';
@@ -63,11 +64,8 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
 >
   <section class="section aw-section">
     <div class="container">
+      <SponsorBanner />
       <article class="aw-prose">
-        <p class="aw-sponsor mb-5">
-          This post is sponsored by <a href={site.sponsorUrl}>RequestDesk</a>, the headless blog
-          this site runs on.
-        </p>
 
         <p class="aw-blog-meta mb-3">
           <time datetime={post.pubDate.toISOString()}>

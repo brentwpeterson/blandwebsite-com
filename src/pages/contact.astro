@@ -181,7 +181,7 @@ import waiting from '../assets/images/waiting-by-phone.png';
       );
       if (!res.ok) throw new Error(`HubSpot answered ${res.status}`);
       form.reset();
-      say('Thanks. A human at Content Cucumber has your message, which makes it the least bland thing on this site.');
+      say('Thanks. A human at Content Cucumber has your message, which makes it the least bland thing we have.');
     } catch (err) {
       console.error('[contact-form]', err);
       say('That did not send. Check the email address and try again, or reach a human at contentcucumber.com.');

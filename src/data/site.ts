@@ -19,8 +19,8 @@ export const site = {
   },
   url: 'https://blandwebsite.com',
   humanUrl: 'https://contentcucumber.com/',
-  // Sponsor line at the top of every post. The page is RequestDesk's headless
-  // blog hosting for Astro, the service this blog runs on.
+  // The RequestDesk sponsor banner at the top of every post (SponsorBanner.astro) links here,
+  // RequestDesk's Astro blog hosting page. The blog's posts come from RequestDesk.
   sponsorUrl: 'https://requestdesk.ai/solutions/astro-blog-hosting/',
   // The contact form posts to this HubSpot form (portal 39487190, form
   // "BlandWebsite-Contact", created 2026-11-03). Submissions reach the

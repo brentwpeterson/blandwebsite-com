@@ -1,0 +1,109 @@
+---
+/**
+ * RequestDesk sponsor banner at the top of every blog post. Brent owns the ad copy
+ * (Brent, 2026-11-12: "I do get creative control over the ads"); change the words in
+ * `banner` below and nowhere else. The link goes to RequestDesk's Astro blog hosting page.
+ */
+import { site } from '../data/site';
+
+const banner = {
+  label: 'Sponsored by RequestDesk',
+  headline: 'We run our blog on headless Astro',
+  body: 'RequestDesk holds every post, and Astro builds the pages. Your Astro blog can work the same way.',
+  cta: 'See how it works',
+};
+
+const href = new URL(site.sponsorUrl);
+href.searchParams.set('utm_source', 'blandwebsite');
+href.searchParams.set('utm_medium', 'sponsor-banner');
+href.searchParams.set('utm_campaign', 'requestdesk-astro');
+---
+
+<a class="aw-sponsor-banner" href={href.href} data-sponsor-banner>
+  <img
+    class="aw-sponsor-img"
+    src="/sponsor/requestdesk-astro.jpg"
+    alt="A Jack Russell terrier puppet loads blank pages into a handmade toy rocket in a miniature wooden workshop."
+    width="1774"
+    height="887"
+    loading="eager"
+  />
+  <span class="aw-sponsor-text">
+    <span class="aw-sponsor-label">{banner.label}</span>
+    <span class="aw-sponsor-headline">{banner.headline}</span>
+    <span class="aw-sponsor-body">{banner.body}</span>
+    <span class="button is-primary aw-sponsor-cta">{banner.cta}</span>
+  </span>
+</a>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const a = document.querySelector<HTMLAnchorElement>('[data-sponsor-banner]');
+    if (!a) return;
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    a.onclick = () => gtag?.('event', 'sponsor_click', { sponsor: 'requestdesk', page_path: location.pathname });
+  });
+</script>
+
+<style>
+  /* Full container width, the same as the ad slot below the page, and twice its
+     height (the ad slot's min-height is 9.5rem). */
+  .aw-sponsor-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 19rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--aw-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--aw-ink-raised);
+    color: var(--aw-text);
+    text-decoration: none;
+  }
+  .aw-sponsor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .aw-sponsor-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 2rem 2.25rem;
+  }
+  .aw-sponsor-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .aw-sponsor-headline {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .aw-sponsor-body {
+    font-size: 1.05rem;
+    opacity: 0.85;
+  }
+  .aw-sponsor-cta {
+    margin-top: 0.5rem;
+  }
+  @media (max-width: 768px) {
+    .aw-sponsor-banner {
+      grid-template-columns: 1fr;
+    }
+    .aw-sponsor-img {
+      height: 12rem;
+    }
+    .aw-sponsor-text {
+      padding: 1.25rem;
+    }
+    .aw-sponsor-headline {
+      font-size: 1.35rem;
+    }
+  }
+</style>
