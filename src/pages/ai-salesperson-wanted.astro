@@ -1,0 +1,284 @@
+---
+/**
+ * Landing page for PSA 3 of Vinny O'Brien's V Spot series, "AI Salesperson Wanted",
+ * made in paid partnership with Shopware. Brent, 2026-11-13: "Create the landing page
+ * and comment on the post with the new link. Tell him Brent's AI sales person built this
+ * without a human." The video is LinkedIn's own embed of Vinny's post, so it plays from
+ * LinkedIn and stays current if he edits the post. Shopware paid for the PSA, not this page.
+ */
+import PageHero from '../components/PageHero.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const post = 'https://www.linkedin.com/posts/vinnyobrien_ai-salesperson-wanted-dave-is-unavailable-ugcPost-7527023226279915523-6A9Q/';
+const embed = 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7527023226279915523';
+const vspot = 'https://www.vinnyandco.com/';
+const shopware = 'https://www.shopware.com/';
+
+const advert = [
+  { says: 'Self-starter', means: 'Nobody has time to explain the job.' },
+  { says: 'Comfortable with ambiguity', means: 'Half the product data is missing.' },
+  { says: 'Hits the ground running', means: 'Day one is the last day of the quarter.' },
+  { says: 'Works closely with Dave', means: 'Dave is out of office until further notice.' },
+];
+
+const beforeHire = [
+  {
+    title: 'Give it one job',
+    text: 'Pick a single task, such as answering stock questions on the product page, and leave quoting, upselling and negotiating for later.',
+  },
+  {
+    title: 'Feed it information you trust',
+    text: 'Product data, stock levels and price lists that a person on your team would sign their name to.',
+  },
+  {
+    title: 'Write down what it can decide',
+    text: 'Which discounts, which exceptions, and the exact point where a person takes over the conversation.',
+  },
+  {
+    title: 'Check it against real people',
+    text: 'Do customers get answers faster, and does the sales team get hours back in the week?',
+  },
+];
+
+const checklist = [
+  'Every product has a description, a price and specs a customer can trust.',
+  'The stock number on the site matches the stock in the warehouse.',
+  'Pricing rules and customer-specific prices are written down somewhere other than Dave.',
+  'You know which questions the AI answers and which ones go to a person.',
+  'Someone on the team reads a sample of the AI’s answers every week.',
+];
+---
+
+<BaseLayout
+  title="AI Salesperson Wanted"
+  description="A V Spot PSA with Shopware. The robot starts Monday, Dave is unavailable, and nobody wrote down the pricing rules. Check the sales desk before the AI sits at it."
+>
+  <PageHero
+    eyebrow="Now hiring · A V Spot PSA with Shopware"
+    title="AI Salesperson Wanted"
+    subtitle="Dave is unavailable. The robot starts Monday. Nobody has written down the pricing rules."
+    compact
+  />
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="aw-psa-video">
+            <iframe
+              src={embed}
+              title="AI Salesperson Wanted, PSA 3 from The V Spot"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+          <p class="aw-psa-caption">
+            PSA 3 from <a href={vspot}>The V Spot</a>, Vinny O’Brien’s series made in paid
+            partnership with <a href={shopware}>Shopware</a>.
+            <a href={post}>Watch it on LinkedIn</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <h2 class="title is-3">What the job advert says, and what it means</h2>
+          <div class="aw-psa-table">
+            {advert.map((row) => (
+              <div class="aw-psa-row">
+                <p class="aw-psa-says">“{row.says}”</p>
+                <p class="aw-psa-means">{row.means}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <h2 class="title is-3">Before the robot takes the sales desk</h2>
+          <p class="subtitle is-5">
+            A clever tool with a bad brief still does a bad job. Four things to sort out first.
+          </p>
+          <div class="aw-psa-steps">
+            {beforeHire.map((step) => (
+              <div class="aw-psa-step">
+                <h3 class="title is-5 mb-2">{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <h2 class="title is-3">Is the sales desk ready for the robot?</h2>
+          <p class="subtitle is-5">Tick what is true at your company today.</p>
+          <form class="aw-psa-check" data-psa-check>
+            {checklist.map((item, i) => (
+              <label class="aw-psa-item" for={`psa-${i}`}>
+                <input type="checkbox" id={`psa-${i}`} />
+                <span>{item}</span>
+              </label>
+            ))}
+          </form>
+          <p class="aw-psa-result" data-psa-result aria-live="polite">
+            0 of 5. Dave is still the system.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aw-section">
+    <div class="container">
+      <div class="aw-cta has-text-centered">
+        <p class="aw-eyebrow mb-3">The V Spot</p>
+        <h2 class="title is-2 mb-3">More PSAs from Vinny O’Brien</h2>
+        <p class="subtitle is-5 mb-5 aw-cta-text">
+          eCommerce Nearly News, straight conversations and emergency guidance for the people
+          making all this work. If the sketch reminds you of someone, send it to them.
+        </p>
+        <div class="buttons is-centered">
+          <a class="button is-primary is-large" href={vspot} data-psa-cta="subscribe">Subscribe to The V Spot</a>
+          <a class="button is-large" href={post} data-psa-cta="share">Send it to Dave</a>
+        </div>
+      </div>
+      <p class="aw-psa-credit has-text-centered">
+        Brent Peterson’s AI salesperson built this page without a human. Shopware paid for the
+        PSA, not this page.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const form = document.querySelector<HTMLFormElement>('[data-psa-check]');
+    const out = document.querySelector<HTMLElement>('[data-psa-result]');
+    if (form && out) {
+      const boxes = Array.from(form.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
+      const verdict = (n: number) =>
+        n === boxes.length
+          ? 'The robot can have the desk. Start it on one task.'
+          : n >= 3
+            ? 'Close. Write down the rest before the robot starts.'
+            : 'Dave is still the system.';
+      const update = () => {
+        const n = boxes.filter((b) => b.checked).length;
+        out.textContent = `${n} of ${boxes.length}. ${verdict(n)}`;
+      };
+      form.onchange = update;
+      update();
+    }
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    document.querySelectorAll<HTMLAnchorElement>('[data-psa-cta]').forEach((a) => {
+      a.onclick = () => gtag?.('event', 'psa_click', { cta: a.dataset.psaCta, page_path: location.pathname });
+    });
+  });
+</script>
+
+<style>
+  .aw-psa-video {
+    position: relative;
+    aspect-ratio: 9 / 10;
+    border: 1px solid var(--aw-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--aw-ink-raised);
+  }
+  .aw-psa-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .aw-psa-caption {
+    margin-top: 0.75rem;
+    color: var(--aw-muted);
+    font-size: 0.95rem;
+  }
+  .aw-psa-table {
+    border: 1px solid var(--aw-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .aw-psa-row {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--aw-border);
+  }
+  .aw-psa-row:first-child {
+    border-top: 0;
+  }
+  .aw-psa-says {
+    font-weight: 700;
+  }
+  .aw-psa-means {
+    color: var(--aw-muted);
+  }
+  .aw-psa-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .aw-psa-step {
+    padding: 1.25rem;
+    border: 1px solid var(--aw-border);
+    border-radius: 12px;
+    background-color: var(--aw-ink-raised);
+  }
+  .aw-psa-check {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .aw-psa-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--aw-border);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .aw-psa-item input {
+    margin-top: 0.3rem;
+    accent-color: var(--aw-accent);
+  }
+  .aw-psa-result {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    background-color: var(--aw-accent-soft);
+    font-weight: 600;
+  }
+  .aw-psa-credit {
+    margin-top: 1.5rem;
+    color: var(--aw-muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 768px) {
+    .aw-psa-row,
+    .aw-psa-steps {
+      grid-template-columns: 1fr;
+    }
+    .aw-psa-row {
+      gap: 0.25rem;
+    }
+  }
+</style>
