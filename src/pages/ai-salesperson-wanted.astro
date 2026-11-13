@@ -10,7 +10,7 @@ import PageHero from '../components/PageHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const post = 'https://www.linkedin.com/posts/vinnyobrien_ai-salesperson-wanted-dave-is-unavailable-ugcPost-7527023226279915523-6A9Q/';
-const embed = 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7527023226279915523';
+const embed = 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7527023226279915523?compact=1';
 const vspot = 'https://www.vinnyandco.com/';
 const shopware = 'https://www.shopware.com/';
 
@@ -73,7 +73,7 @@ const checklist = [
           </div>
           <p class="aw-psa-caption">
             PSA 3 from <a href={vspot}>The V Spot</a>, Vinny O’Brien’s series made in paid
-            partnership with <a href={shopware}>Shopware</a>.
+            partnership with <a href={shopware}>Shopware</a>.{' '}
             <a href={post}>Watch it on LinkedIn</a>.
           </p>
         </div>
@@ -193,7 +193,7 @@ const checklist = [
 <style>
   .aw-psa-video {
     position: relative;
-    aspect-ratio: 9 / 10;
+    aspect-ratio: 16 / 10;
     border: 1px solid var(--aw-border);
     border-radius: 12px;
     overflow: hidden;
