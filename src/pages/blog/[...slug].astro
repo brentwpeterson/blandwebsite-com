@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import SponsorBanner from '../../components/SponsorBanner.astro';
+import MidPostAd from '../../components/MidPostAd.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/date';
 import { categorySlug, getAllPosts, type Post } from '../../utils/posts';
@@ -107,7 +108,11 @@ const schema = { '@context': context, '@graph': [blogPosting, faqSchema] };
           )
         }
 
-        {Content ? <Content /> : <Fragment set:html={post.html} />}
+        <div data-post-body>
+          {Content ? <Content /> : <Fragment set:html={post.html} />}
+        </div>
+
+        <MidPostAd />
 
         <section class="aw-qa mt-6" id="questions">
           <h2>Questions and answers</h2>

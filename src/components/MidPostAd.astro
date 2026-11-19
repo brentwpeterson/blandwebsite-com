@@ -1,0 +1,131 @@
+---
+/**
+ * Brent's ad in the middle of a blog post. The words and image come from src/data/mid-ad.ts
+ * only. The post page renders this right after the post body; the script below moves it in
+ * front of the section heading (h2) nearest the middle of the body, so it never splits a
+ * paragraph. Markdown posts and RequestDesk HTML posts both work, since the move happens on
+ * the rendered page. With JavaScript off the ad stays at the end of the post.
+ */
+import { midAd } from '../data/mid-ad';
+
+const href = (() => {
+  if (!midAd) return '';
+  const u = new URL(midAd.href);
+  u.searchParams.set('utm_source', 'blandwebsite');
+  u.searchParams.set('utm_medium', 'mid-post-ad');
+  u.searchParams.set('utm_campaign', midAd.id);
+  u.searchParams.set('utm_content', midAd.id);
+  return u.href;
+})();
+---
+
+{
+  midAd && (
+    <aside class="aw-mid-ad" aria-label="Advertisement" data-mid-ad data-ad-id={midAd.id}>
+      <p class="aw-mid-ad-label">{midAd.label}</p>
+      <a class="aw-mid-ad-link" href={href}>
+        {midAd.image && (
+          <img
+            class="aw-mid-ad-img"
+            src={midAd.image}
+            alt={midAd.imageAlt ?? ''}
+            width={midAd.imageWidth}
+            height={midAd.imageHeight}
+            loading="lazy"
+          />
+        )}
+        <span class="aw-mid-ad-text">
+          <span class="aw-mid-ad-headline">{midAd.headline}</span>
+          <span class="aw-mid-ad-body">{midAd.body}</span>
+          <span class="button is-primary aw-mid-ad-cta">{midAd.cta}</span>
+        </span>
+      </a>
+    </aside>
+  )
+}
+
+<script>
+  function placeMidAd() {
+    const ad = document.querySelector<HTMLElement>('[data-mid-ad]');
+    const body = document.querySelector<HTMLElement>('[data-post-body]');
+    if (!ad || !body) return;
+    // Section headings in the post body, excluding the Q&A block.
+    const heads = Array.from(body.querySelectorAll<HTMLElement>(':scope h2')).filter(
+      (h) => !h.closest('[data-qa], .aw-qa'),
+    );
+    if (heads.length >= 2) {
+      const middle = body.offsetTop + body.offsetHeight / 2;
+      // Never before the first heading: the ad sits between sections, not above the opening.
+      const target = heads
+        .slice(1)
+        .reduce((best, h) => (Math.abs(h.offsetTop - middle) < Math.abs(best.offsetTop - middle) ? h : best));
+      target.before(ad);
+    } else {
+      // Fewer than two headings: after the paragraph nearest the middle.
+      const paras = Array.from(body.querySelectorAll<HTMLElement>(':scope > p'));
+      if (paras.length >= 4) paras[Math.floor(paras.length / 2) - 1].after(ad);
+    }
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    gtag?.('event', 'mid_ad_view', { ad_id: ad.dataset.adId, page_path: location.pathname });
+    const link = ad.querySelector<HTMLAnchorElement>('a');
+    if (link) link.onclick = () => gtag?.('event', 'mid_ad_click', { ad_id: ad.dataset.adId, page_path: location.pathname });
+  }
+  document.addEventListener('astro:page-load', placeMidAd);
+</script>
+
+<style>
+  .aw-mid-ad {
+    margin: 2.5rem 0;
+    padding: 1rem 1.25rem 1.25rem;
+    border: 1px dashed var(--aw-border);
+    border-radius: 12px;
+    background-color: var(--aw-ink-raised);
+  }
+  .aw-mid-ad-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 0.75rem !important;
+  }
+  .aw-mid-ad-link {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 1.25rem;
+    align-items: center;
+    color: var(--aw-text);
+    text-decoration: none;
+  }
+  .aw-mid-ad-link:not(:has(img)) {
+    grid-template-columns: 1fr;
+  }
+  .aw-mid-ad-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 0 !important;
+  }
+  .aw-mid-ad-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .aw-mid-ad-headline {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .aw-mid-ad-body {
+    opacity: 0.85;
+  }
+  .aw-mid-ad-cta {
+    margin-top: 0.25rem;
+  }
+  @media (max-width: 640px) {
+    .aw-mid-ad-link {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
